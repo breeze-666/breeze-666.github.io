@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title></title>
+      <link href="/2022/01/10/defcon-2015-r0pbaby/"/>
+      <url>/2022/01/10/defcon-2015-r0pbaby/</url>
+      
+        <content type="html"><![CDATA[<ul><li>checksec一下</li></ul><img src="/2022/01/10/defcon-2015-r0pbaby/check.png" alt="check" style="zoom:80%;"><ul><li><p>运行</p><img src="/2022/01/10/defcon-2015-r0pbaby/run.png" alt="image-20220110112717649" style="zoom:80%;"><ul><li>功能1,获取libc基址</li><li>功能2,获得函数地址</li><li>功能3,输入值</li></ul></li></ul><ul><li><p>拖入IDA</p><img src="/2022/01/10/defcon-2015-r0pbaby/memcpy.png" alt="image-20220110115718520" style="zoom:80%;"></li></ul><p>​        发现memcpy()函数:复制内存内容(忽略\0)</p><p>​        memcpy()用来复制内存,其原型为:</p><pre><code>   <pre class="line-numbers language-c" data-language="c"><code class="language-c">void * memcpy(void * dest,const void *src,size_t num);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></code></pre><p>​       memcpy()会复制src所指的内存内容的前num个字节到dest所指的内存地址上.</p><p>​        memcpy()并不关心被复制的数据类型,只是逐字节锝进行复制,这给函数的使用带来了很大的灵活性,可以面向任何数据类型进行复制.</p><p>​       需要注意的是:</p><p>​             dest指针要分配足够的空间,也即大于等于num字节的空间.</p><p>​             dest和src所指的内存空间不能重叠</p><p>​       与strcpy()不同的是,memcpy()会复制完整num个字节,不会因为遇到”\0”而结束.</p><ul><li><p>savedregs是一个IDA关键字,保存的堆栈帧指针函数返回地址</p></li><li><p>找gadget</p><img src="/2022/01/10/defcon-2015-r0pbaby/gadget.png" alt="image-20220110122631262" style="zoom:80%;"><ul><li><p>查看本地libc.so</p><img src="/2022/01/10/defcon-2015-r0pbaby/libc.png" alt="image-20220110123659827" style="zoom:80%;"></li></ul><ul><li>找”bin/sh”</li></ul><img src="/2022/01/10/defcon-2015-r0pbaby/bin_sh.png" alt="image-20220110123435108" style="zoom:80%;"></li></ul><ul><li>构造exp</li></ul>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Hello World</title>
       <link href="/2021/11/30/hello-world/"/>
       <url>/2021/11/30/hello-world/</url>
