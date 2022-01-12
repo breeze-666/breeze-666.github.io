@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>ret2libc3</title>
+      <link href="/2022/01/12/ret2libc3/"/>
+      <url>/2022/01/12/ret2libc3/</url>
+      
+        <content type="html"><![CDATA[<ul><li><p>checksec</p><img src="/2022/01/12/ret2libc3/checksec.png" alt="image-20220112081658716" style="zoom:80%;"></li><li><p>run</p><img src="/2022/01/12/ret2libc3/run.png" alt="image-20220112081802038" style="zoom:80%;"></li><li><p>ida</p><p>基本利用思路</p><ul><li>泄露_libc_start_main地址</li><li>获取libc版本</li><li>获取system地址与/bin/sh地址</li><li>再次执行源程序</li><li>触发栈溢出执行system(‘/bin/sh’)</li></ul></li><li><p>exp</p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 栈溢出 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>ret2libc2</title>
       <link href="/2022/01/12/ret2libc2/"/>
       <url>/2022/01/12/ret2libc2/</url>

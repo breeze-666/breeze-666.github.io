@@ -4,31 +4,26 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Defcon-2015-r0pbaby, 微凉">
+    <meta name="keywords" content="ret2libc3, 微凉">
     <meta name="description" content="
-checksec一下
+checksec
+
+run
+
+ida
+基本利用思路
+
+泄露_libc_start_main地址
+获取libc版本
+获取system地址与/bin/sh地址
+再次执行源程序
+触发栈溢出执行system(‘/bin/sh’)
 
 
+exp
 
 
-
-
-运行
-
-
-
-功能1,获取libc基址
-功能2,获得函数地址
-功能3,输入值
-
-
-
-
-拖入IDA
-
-
-​        发现memcpy()函数:复制内存内容(忽略\0)
-​        memcpy()">
+">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -40,7 +35,7 @@ checksec一下
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Defcon-2015-r0pbaby | 微凉</title>
+    <title>ret2libc3 | 微凉</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -227,12 +222,12 @@ checksec一下
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Defcon-2015-r0pbaby</h1>
+                    <h1 class="description center-align post-title">ret2libc3</h1>
                 </div>
             </div>
         </div>
@@ -348,12 +343,8 @@ checksec一下
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/pwn/">
-                                <span class="chip bg-color">pwn</span>
-                            </a>
-                        
-                            <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/">
-                                <span class="chip bg-color">二进制</span>
+                            <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
+                                <span class="chip bg-color">栈溢出</span>
                             </a>
                         
                     </div>
@@ -377,7 +368,7 @@ checksec一下
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-01-10
+                    2022-01-12
                 </div>
                 
 
@@ -386,7 +377,7 @@ checksec一下
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    247
+                    47
                 </div>
                 
 
@@ -412,54 +403,22 @@ checksec一下
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <ul>
-<li>checksec一下</li>
-</ul>
-<img src="/2022/01/10/defcon-2015-r0pbaby/check.png" alt="check" style="zoom:80%;">
-
-
-
+<li><p>checksec</p>
+<img src="/2022/01/12/ret2libc3/checksec.png" alt="image-20220112081658716" style="zoom:80%;"></li>
+<li><p>run</p>
+<img src="/2022/01/12/ret2libc3/run.png" alt="image-20220112081802038" style="zoom:80%;"></li>
+<li><p>ida</p>
+<p>基本利用思路</p>
 <ul>
-<li><p>运行</p>
-<img src="/2022/01/10/defcon-2015-r0pbaby/run.png" alt="image-20220110112717649" style="zoom:80%;">
-
-<ul>
-<li>功能1,获取libc基址</li>
-<li>功能2,获得函数地址</li>
-<li>功能3,输入值</li>
+<li>泄露_libc_start_main地址</li>
+<li>获取libc版本</li>
+<li>获取system地址与/bin/sh地址</li>
+<li>再次执行源程序</li>
+<li>触发栈溢出执行system(‘/bin/sh’)</li>
 </ul>
 </li>
-</ul>
-<ul>
-<li><p>拖入IDA</p>
-<img src="/2022/01/10/defcon-2015-r0pbaby/memcpy.png" alt="image-20220110115718520" style="zoom:80%;"></li>
-</ul>
-<p>​        发现memcpy()函数:复制内存内容(忽略\0)</p>
-<p>​        memcpy()用来复制内存,其原型为:</p>
-<pre><code>   <pre class="line-numbers language-c" data-language="c"><code class="language-c">void * memcpy(void * dest,const void *src,size_t num);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</code></pre>
-<p>​       memcpy()会复制src所指的内存内容的前num个字节到dest所指的内存地址上.</p>
-<p>​        memcpy()并不关心被复制的数据类型,只是逐字节锝进行复制,这给函数的使用带来了很大的灵活性,可以面向任何数据类型进行复制.</p>
-<p>​       需要注意的是:</p>
-<p>​             dest指针要分配足够的空间,也即大于等于num字节的空间.</p>
-<p>​             dest和src所指的内存空间不能重叠</p>
-<p>​       与strcpy()不同的是,memcpy()会复制完整num个字节,不会因为遇到”\0”而结束.</p>
-<ul>
-<li><p>savedregs是一个IDA关键字,保存的堆栈帧指针函数返回地址</p>
+<li><p>exp</p>
 </li>
-<li><p>找gadget</p>
-<img src="/2022/01/10/defcon-2015-r0pbaby/gadget.png" alt="image-20220110122631262" style="zoom:80%;">
-
-<ul>
-<li><p>查看本地libc.so</p>
-<img src="/2022/01/10/defcon-2015-r0pbaby/libc.png" alt="image-20220110123659827" style="zoom:80%;"></li>
-</ul>
-<ul>
-<li>找”bin/sh”</li>
-</ul>
-<img src="/2022/01/10/defcon-2015-r0pbaby/bin_sh.png" alt="image-20220110123435108" style="zoom:80%;"></li>
-</ul>
-<ul>
-<li>构造exp</li>
 </ul>
 
                 
@@ -487,7 +446,7 @@ checksec一下
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://breeze-666.github.io/2022/01/10/defcon-2015-r0pbaby/">https://breeze-666.github.io/2022/01/10/defcon-2015-r0pbaby/</a>
+                    <a href="https://breeze-666.github.io/2022/01/12/ret2libc3/">https://breeze-666.github.io/2022/01/12/ret2libc3/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -525,12 +484,8 @@ checksec一下
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/pwn/">
-                                    <span class="chip bg-color">pwn</span>
-                                </a>
-                            
-                                <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/">
-                                    <span class="chip bg-color">二进制</span>
+                                <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
+                                    <span class="chip bg-color">栈溢出</span>
                                 </a>
                             
                         </div>
@@ -576,17 +531,18 @@ checksec一下
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/01/10/ret2text/">
+                <a href="/2022/01/12/ret2libc3/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="ret2text">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="ret2libc3">
                         
-                        <span class="card-title">ret2text</span>
+                        <span class="card-title">ret2libc3</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -596,9 +552,59 @@ checksec一下
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-10
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/pwn/" class="post-category">
+                                    pwn
+                                </a>
+                            
+                            
                         </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
+                        <span class="chip bg-color">栈溢出</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/01/12/ret2libc2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="ret2libc2">
+                        
+                        <span class="card-title">ret2libc2</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-12
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -618,43 +624,6 @@ checksec一下
                         <span class="chip bg-color">栈溢出</span>
                     </a>
                     
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2021/11/30/hello-world/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
-                        
-                        <span class="card-title">Hello World</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-30
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            breeze-666
-                            
-                        </span>
-                    </div>
                 </div>
                 
             </div>
