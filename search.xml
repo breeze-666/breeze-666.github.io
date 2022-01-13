@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title>xctf</title>
+      <title>dice_game</title>
       <link href="/2022/01/12/dice-game/"/>
       <url>/2022/01/12/dice-game/</url>
       
@@ -21,31 +21,6 @@
         <tags>
             
             <tag> 简单随机数绕过 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>xctf</title>
-      <link href="/2022/01/12/xctf/"/>
-      <url>/2022/01/12/xctf/</url>
-      
-        <content type="html"><![CDATA[<ol><li><p>dice_game</p><ul><li><p>checksec</p><img src="/2022/01/12/xctf/checksec.png" alt="image-20220112185425348" style="zoom:80%;"></li></ul></li></ol><ul><li><ul><li><p>扔进ida</p></li><li></li></ul></li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> pwn </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> wp </tag>
             
         </tags>
       
