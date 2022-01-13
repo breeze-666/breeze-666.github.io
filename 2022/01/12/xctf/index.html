@@ -4,23 +4,21 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ret2libc3, 微凉">
+    <meta name="keywords" content="xctf, 微凉">
     <meta name="description" content="
+dice_game
+
 checksec
 
-run
-
-ida
-基本利用思路
-
-泄露_libc_start_main地址
-获取libc版本
-获取system地址与/bin/sh地址
-再次执行源程序
-触发栈溢出执行system(‘/bin/sh’)
 
 
-exp
+
+
+
+扔进ida
+
+
+
 
 
 ">
@@ -35,7 +33,7 @@ exp
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ret2libc3 | 微凉</title>
+    <title>xctf | 微凉</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -222,12 +220,12 @@ exp
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ret2libc3</h1>
+                    <h1 class="description center-align post-title">xctf</h1>
                 </div>
             </div>
         </div>
@@ -343,8 +341,8 @@ exp
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                                <span class="chip bg-color">栈溢出</span>
+                            <a href="/tags/wp/">
+                                <span class="chip bg-color">wp</span>
                             </a>
                         
                     </div>
@@ -377,7 +375,7 @@ exp
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    47
+                    5
                 </div>
                 
 
@@ -402,22 +400,20 @@ exp
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <ul>
-<li><p>checksec</p>
-<img src="/2022/01/12/ret2libc3/checksec.png" alt="image-20220112081658716" style="zoom:80%;"></li>
-<li><p>run</p>
-<img src="/2022/01/12/ret2libc3/run.png" alt="image-20220112081802038" style="zoom:80%;"></li>
-<li><p>ida</p>
-<p>基本利用思路</p>
+                <ol>
+<li><p>dice_game</p>
 <ul>
-<li>泄露_libc_start_main地址</li>
-<li>获取libc版本</li>
-<li>获取system地址与/bin/sh地址</li>
-<li>再次执行源程序</li>
-<li>触发栈溢出执行system(‘/bin/sh’)</li>
+<li><p>checksec</p>
+<img src="/2022/01/12/xctf/checksec.png" alt="image-20220112185425348" style="zoom:80%;"></li>
 </ul>
 </li>
-<li><p>exp</p>
+</ol>
+<ul>
+<li><ul>
+<li><p>扔进ida</p>
+</li>
+<li></li>
+</ul>
 </li>
 </ul>
 
@@ -446,7 +442,7 @@ exp
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://breeze-666.github.io/2022/01/12/ret2libc3/">https://breeze-666.github.io/2022/01/12/ret2libc3/</a>
+                    <a href="https://breeze-666.github.io/2022/01/12/xctf/">https://breeze-666.github.io/2022/01/12/xctf/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -484,8 +480,8 @@ exp
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                                    <span class="chip bg-color">栈溢出</span>
+                                <a href="/tags/wp/">
+                                    <span class="chip bg-color">wp</span>
                                 </a>
                             
                         </div>
@@ -535,13 +531,13 @@ exp
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/01/12/buuctf/">
+                <a href="/2022/01/12/dice-game/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Buuctf 解题">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="xctf">
                         
-                        <span class="card-title">Buuctf 解题</span>
+                        <span class="card-title">xctf</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -569,8 +565,8 @@ exp
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E7%AE%80%E5%8D%95wp/">
-                        <span class="chip bg-color">简单wp</span>
+                    <a href="/tags/%E7%AE%80%E5%8D%95%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%BB%95%E8%BF%87/">
+                        <span class="chip bg-color">简单随机数绕过</span>
                     </a>
                     
                 </div>
@@ -584,13 +580,13 @@ exp
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/01/12/ret2libc2/">
+                <a href="/2022/01/12/buuctf/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="ret2libc2">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Buuctf 解题">
                         
-                        <span class="card-title">ret2libc2</span>
+                        <span class="card-title">Buuctf 解题</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -618,8 +614,8 @@ exp
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                        <span class="chip bg-color">栈溢出</span>
+                    <a href="/tags/%E7%AE%80%E5%8D%95wp/">
+                        <span class="chip bg-color">简单wp</span>
                     </a>
                     
                 </div>

