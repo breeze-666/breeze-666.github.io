@@ -362,7 +362,7 @@ EBP被称为栈帧寄存器,每一次函数调用都会通过栈帧对栈内数�
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    266
+                    303
                 </div>
                 
 
@@ -396,7 +396,8 @@ EBP被称为栈帧寄存器,每一次函数调用都会通过栈帧对栈内数�
 <h3 id="3-如何利用栈迁移进行溢出"><a href="#3-如何利用栈迁移进行溢出" class="headerlink" title="3.如何利用栈迁移进行溢出"></a>3.如何利用栈迁移进行溢出</h3><ul>
 <li>利用leave,ret指令.</li>
 <li>溢出时需要的前提:即使我们溢出缓冲区的字节数很少,也需要覆盖到EBP和EIP这两个地方.</li>
-<li>leave指令相当于mov esp,ebp;pop ebp .</li>
+<li>leave指令相当于mov esp,ebp;pop ebp ; ret指令相当于pop eip;</li>
+<li>pop指令是把栈顶的值弹到指定的寄存器,也就是说esp会自动减一个单位.</li>
 <li>决定可以将栈空间放在哪里,ret指令调用完函数以后可以干什么.</li>
 </ul>
 
@@ -599,12 +600,12 @@ EBP被称为栈帧寄存器,每一次函数调用都会通过栈帧对栈内数�
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/xctf/">
-                        <span class="chip bg-color">xctf</span>
-                    </a>
-                    
                     <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
                         <span class="chip bg-color">栈溢出</span>
+                    </a>
+                    
+                    <a href="/tags/xctf/">
+                        <span class="chip bg-color">xctf</span>
                     </a>
                     
                 </div>
