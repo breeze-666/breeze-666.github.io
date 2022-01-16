@@ -438,6 +438,135 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
+                    <a href="/2022/01/15/fuzz/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="warmup">
+                            
+                            <span class="card-title">warmup</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                此题没有附件
+只能nc,发现有一个输入,可以进行fuzz栈溢出
+fuzz函数def fuzz(r,num,flag):
+    payload = b'a'*num
+    if flag == 1:
+        payload += 
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-15
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/pwn/" class="post-category">
+                                    pwn
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
+                            <span class="chip bg-color">栈溢出</span>
+                        </a>
+                        
+                        <a href="/tags/xctf/">
+                            <span class="chip bg-color">xctf</span>
+                        </a>
+                        
+                        <a href="/tags/fuzz/">
+                            <span class="chip bg-color">fuzz</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/01/15/stack2/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="stack2">
+                            
+                            <span class="card-title">stack2</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                checksec
+
+run
+
+ida+程序分析(ps:计算数组首地址距离retn的偏移时异常痛苦)
+
+
+
+
+​                                                         
+expfrom
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-15
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/pwn/" class="post-category">
+                                    pwn
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
+                            <span class="chip bg-color">栈溢出</span>
+                        </a>
+                        
+                        <a href="/tags/xctf/">
+                            <span class="chip bg-color">xctf</span>
+                        </a>
+                        
+                        <a href="/tags/%E6%95%B0%E7%BB%84%E8%B6%8A%E7%95%8C/">
+                            <span class="chip bg-color">数组越界</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
                     <a href="/2022/01/14/data/">
                         <div class="card-image">
                             
@@ -577,9 +706,8 @@ f
                         <div class="summary block-with-text">
                             
                                 
-flat(*args, preprocessor = None, length = None, filler = de_bruijn(),
-Flattens the arguments into a string.
-This functi
+flat(*args, preprocessor = None, length = None, filler = de_bruijn(),Flattens the arguments into a string.
+This functio
                             
                         </div>
                         <div class="publish-info">
@@ -752,11 +880,13 @@ checksec
 
 扔进ida
 分析程序
+
+
 memset()函数
 void *memset(void *s,int c,unsigned long n);
 
 作用:
-将指针变量s所指向的前n字节的内存单元用一
+将指针变量s所指向的前n字节的内存单元
                             
                         </div>
                         <div class="publish-info">
@@ -809,9 +939,7 @@ void *memset(void *s,int c,unsigned long n);
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                
-pwn1
-from pwn import *
+                                1.pwn1from pwn import *
 log_level = 'debug'
 elf = ELF("./pwn1")
 local = 0
@@ -1035,128 +1163,6 @@ exp
             </div>
               <!-- 隐藏某个文章 -->
             
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/01/11/ret2syscall/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="ret2syscall">
-                            
-                            <span class="card-title">ret2syscall</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-首先checksec一下
-
-运行程序
-
-拖入IDA
-
-
- 发现危险函数gets()
-​        找gadgets
-​        eax
-
-
-​              ebx
-​                        
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-11
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/pwn/" class="post-category">
-                                    pwn
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                            <span class="chip bg-color">栈溢出</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/01/10/ret2shellcode/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="ret2shellcode">
-                            
-                            <span class="card-title">ret2shellcode</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-首先,checksec一下
-
-
-
-运行一下
-
-拖入ida查看
-危险函数strncpy()
-strncpy()用来复制字符串的前n个字符,其原型为:
-char * strncpy(char *dest,const char *src,siz
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-10
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/pwn/" class="post-category">
-                                    pwn
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                            <span class="chip bg-color">栈溢出</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
         </div>
     </article>
 
@@ -1259,7 +1265,7 @@ char * strncpy(char *dest,const char *src,siz
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">3.8k</span>
+                        class="white-color">5k</span>
             
             
             
