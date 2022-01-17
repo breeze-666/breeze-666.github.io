@@ -11,11 +11,10 @@ run
 
 ida+程序分析(ps:计算数组首地址距离retn的偏移时异常痛苦)
 
+此题的关键点也是难点便是找到数组首地址和返回地址之间的偏移.直接从ida看到的偏移并不正确,需要在gdb中手动调试.
 
 
-
-​                                                         
-expfrom">
+此处可以看到通过">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -40,9 +39,9 @@ expfrom">
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+</head>
 
 
 
@@ -377,7 +376,7 @@ expfrom">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    142
+                    238
                 </div>
                 
 
@@ -407,11 +406,18 @@ expfrom">
 <h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/15/stack2/run.png" alt="image-20220115142227040" style="zoom:80%;">
 
 <h3 id="ida-程序分析"><a href="#ida-程序分析" class="headerlink" title="ida+程序分析"></a>ida+程序分析</h3><p>(ps:计算数组首地址距离retn的偏移时异常痛苦)</p>
-<h3 id><a href="#" class="headerlink" title></a><img src="/2022/01/15/stack2/array.png" alt="image-20220115212659649" style="zoom:80%;"></h3><img src="/2022/01/15/stack2/addr.png" alt="image-20220115212936878" style="zoom:80%;">
+<ul>
+<li>此题的关键点也是难点便是找到数组首地址和返回地址之间的偏移.直接从ida看到的偏移并不正确,需要在gdb中手动调试.</li>
+</ul>
+<h3 id=""><a href="#" class="headerlink" title=""></a><img src="/2022/01/15/stack2/array.png" alt="image-20220115212659649" style="zoom:80%;"></h3><ul>
+<li>此处可以看到通过eax和ecx,将v7的数据给v13,此时eax的值便是数组v13的首地址.</li>
+</ul>
+<img src="/2022/01/15/stack2/addr.png" alt="image-20220115212936878" style="zoom:80%;">
 
-
-
-<p>​                                                         <img src="/2022/01/15/stack2/ret.png" alt="image-20220115213107027" style="zoom:80%;"></p>
+<ul>
+<li>在retn处下断点,esp处的值便是返回地址.</li>
+</ul>
+<p>​                        <img src="/2022/01/15/stack2/ret.png" alt="image-20220115213107027" style="zoom:80%;"></p>
 <h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 context.log_level = 'debug'
 elf = ELF("./stack2")
@@ -916,7 +922,7 @@ r.interactive()
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">5k</span>
+                        class="white-color">5.3k</span>
             
             
             

