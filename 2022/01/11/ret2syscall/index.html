@@ -6,20 +6,17 @@
     <meta charset="utf-8">
     <meta name="keywords" content="ret2syscall, 微凉">
     <meta name="description" content="
+原理:控制程序执行系统调用,获取shell
 首先checksec一下
+run
+IDA
 
-运行程序
-
-拖入IDA
-
-
- 发现危险函数gets(),明显的栈溢出.
-​        找gadgets,使用ROPgadget进行寻找
+   发现危险函数gets(),明显的栈溢出.
+   找gadgets,使用ROPgadget进行寻找
 ​        eax
 
 
-​              ebx
-​">
+​       ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -44,9 +41,9 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<meta name="generator" content="Hexo 5.4.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-</head>
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
 
 
 
@@ -373,7 +370,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    87
+                    160
                 </div>
                 
 
@@ -399,29 +396,41 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <ul>
-<li><p>首先checksec一下</p>
-<img src="/2022/01/11/ret2syscall/ret2syscall.png" alt="image-20220111142017568" style="zoom:80%;"></li>
-<li><p>运行程序</p>
-<img src="/2022/01/11/ret2syscall/run.png" alt="image-20220111142216384" style="zoom:80%;"></li>
-<li><p>拖入IDA</p>
-<img src="/2022/01/11/ret2syscall/unsafe.png" alt="image-20220111143431233" style="zoom:80%;">
+<li><h3 id="原理-控制程序执行系统调用-获取shell"><a href="#原理-控制程序执行系统调用-获取shell" class="headerlink" title="原理:控制程序执行系统调用,获取shell"></a>原理:控制程序执行系统调用,获取shell</h3></li>
+<li><h4 id="首先checksec一下"><a href="#首先checksec一下" class="headerlink" title="首先checksec一下"></a>首先checksec一下</h4><img src="/2022/01/11/ret2syscall/ret2syscall.png" alt="image-20220111142017568" style="zoom:80%;"></li>
+<li><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/11/ret2syscall/run.png" alt="image-20220111142216384" style="zoom:80%;"></li>
+<li><h3 id="IDA"><a href="#IDA" class="headerlink" title="IDA"></a>IDA</h3><img src="/2022/01/11/ret2syscall/unsafe.png" alt="image-20220111143431233" style="zoom:80%;">
 
-<p> 发现危险函数gets(),明显的栈溢出.</p>
-<p>​        找gadgets,使用ROPgadget进行寻找</p>
+<p>   发现危险函数gets(),明显的栈溢出.</p>
+<p>   找gadgets,使用ROPgadget进行寻找</p>
 <p>​        eax</p>
 <img src="/2022/01/11/ret2syscall/eax.png" alt="image-20220111144133374" style="zoom:80%;"></li>
 </ul>
 <p>​              ebx</p>
 <p>​                                       <img src="/2022/01/11/ret2syscall/ebx.png" alt="image-20220111144234974" style="zoom:80%;"></p>
-<p>​                bin/sh地址</p>
-<p>​                                    <img src="/2022/01/11/ret2syscall/bin_sh.png" alt="image-20220111144933401" style="zoom:80%;"></p>
-<p>​            int 0x80地址</p>
-<p>​                                   <img src="/2022/01/11/ret2syscall/int.png" alt="image-20220111145124389" style="zoom:80%;"></p>
-<p>​              </p>
-<p>​          </p>
 <ul>
-<li><p>exp</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *                                                                       
+<li> bin/sh地址</li>
+</ul>
+<p>​                                    <img src="/2022/01/11/ret2syscall/bin_sh.png" alt="image-20220111144933401" style="zoom:80%;"></p>
+<ul>
+<li> int 0x80地址                <img src="/2022/01/11/ret2syscall/int.png" alt="image-20220111145124389" style="zoom:80%;"></li>
+</ul>
+<p>​           </p>
+<ul>
+<li><p>若使用execve来获取shell</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">execve("/bin/sh",NULL,NULL)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>该程序是32位,需要</p>
+<blockquote>
+<ul>
+<li>系统调用号,即eax为0xb</li>
+<li>第一个参数,即ebx应该指向/bin/sh的地址,其实执行sh的地址也可以</li>
+<li>第二个参数ecx应该为0</li>
+</ul>
+</blockquote>
+</li>
+<li></li>
+<li><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *                                                                       
 log_level = 'debug'
 elf = ELF("./ret2syscall")
 local = 1
