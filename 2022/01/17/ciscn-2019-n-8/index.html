@@ -5,21 +5,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="ciscn_2019_n_8, 微凉">
-    <meta name="description" content="checksec一看保护全开,本以为很难,没想到…
-
+    <meta name="description" content="checksec(一看保护全开,本以为很难,没想到…)
 
 run
 
 
 
-ida
-发现函数
+ida程序分析
+发现函数(并且只需要var的第14个数是0x11就可以执行system了.)
 
 
 
-只需要var的第14个数是0x11就可以执行system了.
 expfrom pwn import *
-context(os=&#39;linux&#39;,ar">
+context(os=&#39;l">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -44,9 +42,9 @@ context(os=&#39;linux&#39;,ar">
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<meta name="generator" content="Hexo 5.4.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-</head>
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
 
 
 
@@ -373,7 +371,7 @@ context(os=&#39;linux&#39;,ar">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    72
+                    78
                 </div>
                 
 
@@ -398,19 +396,17 @@ context(os=&#39;linux&#39;,ar">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><p>一看保护全开,本以为很难,没想到…</p>
-<img src="/2022/01/17/ciscn-2019-n-8/checksec.png" alt="image-20220117113118808" style="zoom:80%;">
+                <h3 id="checksec-一看保护全开-本以为很难-没想到…"><a href="#checksec-一看保护全开-本以为很难-没想到…" class="headerlink" title="checksec(一看保护全开,本以为很难,没想到…)"></a>checksec(一看保护全开,本以为很难,没想到…)</h3><img src="/2022/01/17/ciscn-2019-n-8/checksec.png" alt="image-20220117113118808" style="zoom:80%;">
 
 <h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/17/ciscn-2019-n-8/run1.png" alt="image-20220117113234511" style="zoom:80%;">
 
 <img src="/2022/01/17/ciscn-2019-n-8/run2.png" alt="image-20220117113442418" style="zoom:80%;">
 
-<h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><ul>
-<li><p>发现函数</p>
+<h3 id="ida程序分析"><a href="#ida程序分析" class="headerlink" title="ida程序分析"></a>ida程序分析</h3><ul>
+<li><p>发现函数(并且只需要var的第14个数是0x11就可以执行system了.)</p>
 <p><img src="/2022/01/17/ciscn-2019-n-8/system.png" alt="image-20220117113759246"></p>
 </li>
 </ul>
-<p>只需要var的第14个数是0x11就可以执行system了.</p>
 <h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 context(os='linux',arch='i386',log_level='debug')
 elf = ELF("./ciscn_n_8")
