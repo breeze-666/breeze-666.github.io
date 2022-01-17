@@ -6,16 +6,11 @@
     <meta charset="utf-8">
     <meta name="keywords" content="ret2libc1, 微凉">
     <meta name="description" content="
+原理控制执行libc中的函数,通常是返回至某个函数的具体位置(即函数对应的got表内容).一般情况下,我们会选择执行system(“/bin/sh”),故而此时我们需要知道system函数的地址.
+
 checksec
-
 运行
-
-拖入IDA分析
-通过ALT+T
-可以发现system和bin/sh
-
-exp
- 1 from pwn import *                                              ">
+拖入IDA分析">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -40,9 +35,9 @@ exp
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+</head>
 
 
 
@@ -369,7 +364,7 @@ exp
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    86
+                    164
                 </div>
                 
 
@@ -395,16 +390,15 @@ exp
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <ul>
-<li><p>checksec</p>
-<img src="/2022/01/11/ret2libc1/checksec.png" alt="image-20220111154452445" style="zoom:80%;"></li>
-<li><p>运行</p>
-<img src="/2022/01/11/ret2libc1/run.png" alt="image-20220111184726541" style="zoom:80%;"></li>
-<li><p>拖入IDA分析</p>
+<li><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>控制执行libc中的函数,通常是返回至某个函数的具体位置(即函数对应的got表内容).一般情况下,我们会选择执行system(“/bin/sh”),故而此时我们需要知道system函数的地址.</p>
+</li>
+<li><h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/11/ret2libc1/checksec.png" alt="image-20220111154452445" style="zoom:80%;"></li>
+<li><h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><img src="/2022/01/11/ret2libc1/run.png" alt="image-20220111184726541" style="zoom:80%;"></li>
+<li><h3 id="拖入IDA分析"><a href="#拖入IDA分析" class="headerlink" title="拖入IDA分析"></a>拖入IDA分析</h3><p>可以很容易发现危险函数gets</p>
 <p>通过ALT+T</p>
 <p>可以发现system和bin/sh</p>
 </li>
-<li><p>exp</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"> 1 from pwn import *                                                           
+<li><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"> 1 from pwn import *                                                           
  2 log_level = 'debug'
  3 elf = ELF("./ret2libc1")
  4  
@@ -865,7 +859,7 @@ exp
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">5.3k</span>
+                        class="white-color">5.6k</span>
             
             
             

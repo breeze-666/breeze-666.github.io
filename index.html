@@ -30,9 +30,9 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+</head>
 
 
 
@@ -451,7 +451,8 @@
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                checksec
+                                checksec一看保护全开,本以为很难,没想到…
+
 
 run
 
@@ -462,7 +463,9 @@ ida
 
 
 
-
+只需要var的第14个数是0x11就可以执行system了.
+expfrom pwn import *
+context(os='linux',ar
                             
                         </div>
                         <div class="publish-info">
@@ -764,9 +767,8 @@ f
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                
-flat(*args, preprocessor = None, length = None, filler = de_bruijn(),Flattens the arguments into a string.
-This functio
+                                1. flat(*args, preprocessor = None, length = None, filler = de_bruijn(),Flattens the arguments into a string.
+This funct
                             
                         </div>
                         <div class="publish-info">
@@ -871,9 +873,13 @@ EBP被称为栈帧寄存器,每一次函数调用都会通过栈帧对栈内数�
 checksec
 ida
 
-​                                       
-​          cat  flag函数 最后调用此函数
-​                                
+​                                     
+
+fgets函数有输入字符限制,没办法溢出,第二处的scanf是经典的栈溢出
+
+
+
+​      v3v12均为函数地址,v14算是
                             
                         </div>
                         <div class="publish-info">
@@ -1264,7 +1270,7 @@ exp
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">5.3k</span>
+                        class="white-color">5.6k</span>
             
             
             

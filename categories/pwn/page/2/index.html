@@ -30,9 +30,9 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+</head>
 
 
 
@@ -297,16 +297,11 @@
                         <div class="summary block-with-text">
                             
                                 
+原理控制执行libc中的函数,通常是返回至某个函数的具体位置(即函数对应的got表内容).一般情况下,我们会选择执行system(“/bin/sh”),故而此时我们需要知道system函数的地址.
+
 checksec
-
 运行
-
 拖入IDA分析
-通过ALT+T
-可以发现system和bin/sh
-
-exp
- 1 from pwn import *                                              
                             
                         </div>
                         <div class="publish-info">
@@ -690,7 +685,7 @@ checksec一下
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">5.3k</span>
+                        class="white-color">5.6k</span>
             
             
             

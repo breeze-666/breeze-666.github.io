@@ -9,9 +9,13 @@
 checksec
 ida
 
-​                                       
-​          cat  flag函数 最后调用此函数
-​                                ">
+​                                     
+
+fgets函数有输入字符限制,没办法溢出,第二处的scanf是经典的栈溢出
+
+
+
+​      v3v12均为函数地址,v14算是">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -36,9 +40,9 @@ ida
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+</head>
 
 
 
@@ -369,7 +373,7 @@ ida
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    216
+                    214
                 </div>
                 
 
@@ -398,22 +402,24 @@ ida
 <li><h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/13/forgot/checksec.png" alt="image-20220113132119292" style="zoom:80%;"></li>
 <li><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3></li>
 </ul>
-<p>​                                       <img src="/2022/01/13/forgot/flag.png" alt="image-20220113162931499" style="zoom:80%;"></p>
-<p>​          <strong>cat  flag函数</strong> 最后调用此函数</p>
 <p>​                                     <img src="/2022/01/13/forgot/fgets.png" alt="image-20220117123525818" style="zoom:80%;"></p>
 <ul>
 <li><p>fgets函数有输入字符限制,没办法溢出,第二处的scanf是经典的栈溢出</p>
-</li>
-<li><p><img src="/2022/01/13/forgot/v.png" alt="image-20220117124040209"></p>
+<p><img src="/2022/01/13/forgot/v.png" alt="image-20220117124040209"></p>
 </li>
 </ul>
 <p>​      v3<del>v12均为函数地址,v14算是下标,所以只要覆盖掉v3</del>v12中的任意一处,覆盖为cat flag 函数的地址.这里选择v3</p>
-<ul>
-<li><img src="/2022/01/13/forgot/v14.png" alt="image-20220117124328690" style="zoom:80%;">
-- 我们想让程序执行v3处的函数(被我们覆盖后的函数),就必须让v14=1(这样--v14的值便为0,所以就会执行v13处的函数),由于v14本来等于1,所以只要在for循环中不给它其他值的机会,所以让所有if的条件为假.
-- 合法输入为:a~z 0~9 _-+.
-- <img src="/2022/01/13/forgot/if.png" alt="image-20220117124908410" style="zoom:80%;"></li>
-</ul>
+<img src="/2022/01/13/forgot/v14.png" alt="image-20220117124328690" style="zoom:80%;">
+
+<p>我们想让程序执行v3处的函数(被我们覆盖后的函数),就必须让v14=1(这样–v14的值便为0,所以就会执行v13处的函数),由于v14本来等于1,所以只要在for循环中不给它其他值的机会,所以让所有if的条件为假.</p>
+<p>合法输入为:a<del>z 0</del>9 _-+.</p>
+<img src="/2022/01/13/forgot/if.png" alt="image-20220117124908410" style="zoom:80%;">
+
+
+
+<p>  <strong>cat  flag函数</strong> 最后调用此函数</p>
+<img src="/2022/01/13/forgot/flag.png" alt="image-20220113162931499" style="zoom:80%;">
+
 <ul>
 <li><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/13/forgot/run.png" alt="image-20220113163122226" style="zoom:67%;"></li>
 <li><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
@@ -883,7 +889,7 @@ r.interactive()
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">5.3k</span>
+                        class="white-color">5.6k</span>
             
             
             
