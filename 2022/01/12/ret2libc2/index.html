@@ -6,15 +6,13 @@
     <meta charset="utf-8">
     <meta name="keywords" content="ret2libc2, 微凉">
     <meta name="description" content="
+本程序只有system,没有出现”/bin/sh”,需要我们自己来读取字符串,所以需要两个gadgets,第一个控制执行读取字符串,第二个控制执行程序system(“/bin/sh”).
+
 首先checksec一下
 
 然后运行程序
 
-拖入ida查看
-有system无bin/sh
-
-写exp
-   1 from pwn import *                                              ">
+拖入">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -368,7 +366,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    98
+                    153
                 </div>
                 
 
@@ -394,6 +392,8 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <ul>
+<li><p>本程序只有system,没有出现”/bin/sh”,需要我们自己来读取字符串,所以需要两个gadgets,第一个控制执行读取字符串,第二个控制执行程序system(“/bin/sh”).</p>
+</li>
 <li><p>首先checksec一下</p>
 <img src="/2022/01/12/ret2libc2/checksec.png" alt="image-20220112074054848" style="zoom:80%;"></li>
 <li><p>然后运行程序</p>
@@ -867,7 +867,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">5.6k</span>
+                        class="white-color">7.7k</span>
             
             
             

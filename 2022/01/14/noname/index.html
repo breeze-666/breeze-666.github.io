@@ -360,7 +360,7 @@ This funct">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    827
+                    990
                 </div>
                 
 
@@ -435,6 +435,18 @@ int scanf(const char *format,...)<span aria-hidden="true" class="line-numbers-ro
 <li><p>scanf(“输入控制符”,输入参数);</p>
 <p>功能:将从键盘输入的字符转化为”输入控制符”所规定格式的数据,然后存入以输入参数的值为地址的变量中.</p>
 </li>
+</ul>
+<h3 id="4-sys-execve系统调用"><a href="#4-sys-execve系统调用" class="headerlink" title="4.sys_execve系统调用"></a>4.sys_execve系统调用</h3><ul>
+<li>这个系统调用需要设置5个寄存器<ul>
+<li>eax = 11= 0xb</li>
+<li>ebx = &amp;(“/bin/sh”)</li>
+<li>ecx = edx = edi = 0</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-stack-pivot"><a href="#5-stack-pivot" class="headerlink" title="5.stack pivot"></a>5.stack pivot</h3><ul>
+<li>stack pivot 这种技术是一个对抗ASLR的利器.</li>
+<li>stack pivot之所以重要,是因为其利用到的gadget几乎不可能找不到.在函数建立栈帧时有两条指令push ebp;mov ebp,esp,而退出时同样需要消除这两条指令的影响,即leave(mov esp,ebp;pop ebp).且leave一般紧跟着就是ret.因此,在存在栈溢出的程序中,只要我们能控制到栈中的ebp,我们就可以通过两次leave劫持栈.</li>
 </ul>
 
                 
@@ -880,7 +892,7 @@ int scanf(const char *format,...)<span aria-hidden="true" class="line-numbers-ro
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">5.6k</span>
+                        class="white-color">7.7k</span>
             
             
             
