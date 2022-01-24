@@ -360,7 +360,7 @@ This funct">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    990
+                    1.3k
                 </div>
                 
 
@@ -447,6 +447,25 @@ int scanf(const char *format,...)<span aria-hidden="true" class="line-numbers-ro
 <h3 id="5-stack-pivot"><a href="#5-stack-pivot" class="headerlink" title="5.stack pivot"></a>5.stack pivot</h3><ul>
 <li>stack pivot 这种技术是一个对抗ASLR的利器.</li>
 <li>stack pivot之所以重要,是因为其利用到的gadget几乎不可能找不到.在函数建立栈帧时有两条指令push ebp;mov ebp,esp,而退出时同样需要消除这两条指令的影响,即leave(mov esp,ebp;pop ebp).且leave一般紧跟着就是ret.因此,在存在栈溢出的程序中,只要我们能控制到栈中的ebp,我们就可以通过两次leave劫持栈.</li>
+</ul>
+<h3 id="6-IDA常用快捷键"><a href="#6-IDA常用快捷键" class="headerlink" title="6.IDA常用快捷键"></a>6.IDA常用快捷键</h3><ul>
+<li>a: 将数据转换为字符串</li>
+<li>d: 将代码转换成数据</li>
+<li>c: 将数据转换为代码</li>
+<li>esc: 回退键,能够倒回上一步操作的视图(只有在反汇编窗口才是这个作用,如果是在其他窗口按下esc,会关闭该窗口)</li>
+<li>shift+f12: 可以打开string窗口,一键找出所有的字符串,右击setup,还能对窗口的属性进行设置</li>
+<li>ctrl+w: 保存ida数据库</li>
+<li>ctrl+s: 选择某个数据段,直接俄进行跳转</li>
+<li>ctrl+鼠标滚轮: 能够调节流程试图的大小</li>
+<li>x: 对着某个函数\变量按该快捷键,可以查看它的交叉引用</li>
+<li>g: 直接跳转到某个地址</li>
+<li>n: 更改变量的名称</li>
+<li>y: 更改变量的类型</li>
+<li>/: 在反编译后伪代码界面中写下注释</li>
+<li>: 在反编译后伪代码的界面中隐藏/显示变量和函数的类型描述,有时候变量特别多的时候隐藏掉类型描述看起来会轻松很多</li>
+<li>; : 在反汇编后的界面下写下注释</li>
+<li>ctrl+shift+w: 拍摄IDA快照</li>
+<li>u: undefine,取消函数,代码,数据的定义.</li>
 </ul>
 
                 
@@ -892,7 +911,7 @@ int scanf(const char *format,...)<span aria-hidden="true" class="line-numbers-ro
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">8.8k</span>
+                        class="white-color">11.2k</span>
             
             
             
