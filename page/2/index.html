@@ -30,9 +30,9 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<meta name="generator" content="Hexo 5.4.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-</head>
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
 
 
 
@@ -259,68 +259,6 @@
     <!-- 所有文章卡片 -->
     <article id="articles" class="container articles">
         <div class="row article-row">
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/01/19/babystack/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="bjdctf_2020_babystack">
-                            
-                            <span class="card-title">bjdctf_2020_babystack</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                checksec
-
-run
-
-ida
-
-
-
-这道题真的算是非常简单了,程序中直接就给了后门函数,而且保护几乎都没开,只是一个简单的栈溢出.
-从main函数中可以很明显的看到栈溢出,buf距离rbp0x10个字节,且存在后门函数.所以直接栈溢
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-19
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/pwn/" class="post-category">
-                                    pwn
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/buuctf/">
-                            <span class="chip bg-color">buuctf</span>
-                        </a>
-                        
-                        <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                            <span class="chip bg-color">栈溢出</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
             
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
@@ -986,6 +924,65 @@ EBP被称为栈帧寄存器,每一次函数调用都会通过栈帧对栈内数�
             </div>
               <!-- 隐藏某个文章 -->
             
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/01/13/forgot/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="forgot">
+                            
+                            <span class="card-title">forgot</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+checksec
+ida程序分析
+
+​                                     
+fgets函数有输入字符限制,没办法溢出,第二处的scanf是经典的栈溢出
+ v3v12均为函数地址,v14算是下标,所以只
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/pwn/" class="post-category">
+                                    pwn
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/xctf/">
+                            <span class="chip bg-color">xctf</span>
+                        </a>
+                        
+                        <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
+                            <span class="chip bg-color">栈溢出</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
         </div>
     </article>
 
@@ -1089,7 +1086,7 @@ EBP被称为栈帧寄存器,每一次函数调用都会通过栈帧对栈内数�
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">11.2k</span>
+                        class="white-color">10.8k</span>
             
             
             
