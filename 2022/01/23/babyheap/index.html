@@ -39,9 +39,9 @@ fill,用户提供需要修改堆块的index和要修">
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+</head>
 
 
 
@@ -402,18 +402,18 @@ fill,用户提供需要修改堆块的index和要修">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/23/babayheap/checksec.png" alt="image-20220123155106885" style="zoom:80%;">
+                <h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/23/babyheap/checksec.png" alt="image-20220123155106885" style="zoom:80%;">
 
-<h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/23/babayheap/run.png" alt="image-20220123155242621" style="zoom:80%;">
+<h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/23/babyheap/run.png" alt="image-20220123155242621" style="zoom:80%;">
 
-<h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/23/babayheap/main.png" alt="image-20220123155433486" style="zoom:80%;">
+<h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/23/babyheap/main.png" alt="image-20220123155433486" style="zoom:80%;">
 
 <ol>
 <li><p>allocate函数,根据用户输入size根据大小进行内存分配,本程序调用了calloc函数,与malloc不同的是分配内存后会把数据区域全部置0</p>
 </li>
 <li><p>fill,用户提供需要修改堆块的index和要修改的size,然后根据size读取用户输入,问题就出现在size可以由用户输入,我们可以任意构造size,实现伪造堆块的效果</p>
 </li>
-<li><img src="/2022/01/23/babayheap/fill.png" alt="image-20220123160726616" style="zoom: 50%;"></li>
+<li><img src="/2022/01/23/babyheap/fill.png" alt="image-20220123160726616" style="zoom: 50%;"></li>
 <li><p>free 将堆块free</p>
 </li>
 <li><p>dump,根据堆块大小显示出堆块中的内容</p>
@@ -540,7 +540,7 @@ r.interactive()
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://breeze-666.github.io/2022/01/23/babayheap/">https://breeze-666.github.io/2022/01/23/babayheap/</a>
+                    <a href="https://breeze-666.github.io/2022/01/23/babyheap/">https://breeze-666.github.io/2022/01/23/babyheap/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -634,7 +634,7 @@ r.interactive()
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/2022/01/23/babayheap/">
+                <a href="/2022/01/23/babyheap/">
                     <div class="card-image">
                         
                         
