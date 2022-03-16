@@ -360,7 +360,7 @@ This funct">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.3k
+                    1.4k
                 </div>
                 
 
@@ -470,7 +470,19 @@ int scanf(const char *format,...)<span aria-hidden="true" class="line-numbers-ro
 <li>: 在反编译后伪代码的界面中隐藏/显示变量和函数的类型描述,有时候变量特别多的时候隐藏掉类型描述看起来会轻松很多</li>
 <li>; : 在反汇编后的界面下写下注释</li>
 <li>ctrl+shift+w: 拍摄IDA快照</li>
-<li>u: undefine,取消函数,代码,数据的定义.</li>
+<li>u: undefine,取消函数,代码,数据的定义</li>
+</ul>
+<h3 id="puts函数"><a href="#puts函数" class="headerlink" title="puts函数"></a>puts函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c">//头文件 : #include&lt;stdio.h&gt;
+//puts函数用于将一字符串放到标准输出流(stdout)中,并在最后增加换行符'\n
+//函数原型:
+int puts(char *string)
+//[参数]为要输出的字符串
+//[返回值]输出成功返回非0值,否则返回0.
+//puts()从string的开头往stdout中输出字符,直到遇见结束标志'\0','\0'不会输出到stdout.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="格式化字符串"><a href="#格式化字符串" class="headerlink" title="格式化字符串"></a>格式化字符串</h3><ul>
+<li>hh,输出一个字节</li>
+<li>h,输出一个双字节</li>
 </ul>
 
                 
@@ -916,7 +928,7 @@ int scanf(const char *format,...)<span aria-hidden="true" class="line-numbers-ro
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">10.8k</span>
+                        class="white-color">14.2k</span>
             
             
             
