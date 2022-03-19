@@ -85,6 +85,33 @@
     
     
     <entry>
+      <title>supermarket</title>
+      <link href="/2022/01/29/supermarket/"/>
+      <url>/2022/01/29/supermarket/</url>
+      
+        <content type="html"><![CDATA[<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/29/supermarket/checksec.png" alt="image-20220129161817616" style="zoom:80%;"><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/29/supermarket/run.png" alt="image-20220129161911430" style="zoom:67%;"><h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/29/supermarket/main.png" alt="image-20220129163701594" style="zoom: 80%;"><img src="/2022/01/29/supermarket/list.png" alt="image-20220129164855649" style="zoom:80%;"><img src="/2022/01/29/supermarket/add.png" alt="image-20220129165142064" style="zoom:80%;"><img src="/2022/01/29/supermarket/delete.png" alt="image-20220129165228045" style="zoom:80%;"><img src="/2022/01/29/supermarket/list(2).png" alt="image-20220129165312585" style="zoom:80%;"><img src="/2022/01/29/supermarket/change.png" alt="image-20220129165541038" style="zoom:80%;"><img src="/2022/01/29/supermarket/changedes.png" alt="image-20220129165733160" style="zoom:80%;">]]></content>
+      
+      
+      <categories>
+          
+          <category> pwn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> xctf </tag>
+            
+            <tag> heap </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>pwn-100</title>
       <link href="/2022/01/28/pwn100/"/>
       <url>/2022/01/28/pwn100/</url>

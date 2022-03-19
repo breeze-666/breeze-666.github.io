@@ -262,11 +262,11 @@
                 
                 
                 
-                <a href="/categories/pwn/" title="pwn: 38">
+                <a href="/categories/pwn/" title="pwn: 39">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
                             style="background-color: #F9EBEA;">pwn
-                        <span class="tag-length">38</span>
+                        <span class="tag-length">39</span>
                     </span>
                 </a>
                 
@@ -281,6 +281,69 @@
 
     <article id="articles" class="container articles">
         <div class="row tags-posts">
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/01/15/stack2/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="stack2">
+                            
+                            <span class="card-title">stack2</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                checksec
+
+run
+
+ida+程序分析(ps:计算数组首地址距离retn的偏移时异常痛苦)
+
+此题的关键点也是难点便是找到数组首地址和返回地址之间的偏移.直接从ida看到的偏移并不正确,需要在gdb中手动调试.
+
+
+此处可以看到通过
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-15
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/pwn/" class="post-category">
+                                    pwn
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/xctf/">
+                            <span class="chip bg-color">xctf</span>
+                        </a>
+                        
+                        <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
+                            <span class="chip bg-color">栈溢出</span>
+                        </a>
+                        
+                        <a href="/tags/%E6%95%B0%E7%BB%84%E8%B6%8A%E7%95%8C/">
+                            <span class="chip bg-color">数组越界</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
@@ -892,66 +955,6 @@ IDA
                         
                         <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
                             <span class="chip bg-color">栈溢出</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/01/10/ret2shellcode/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="ret2shellcode">
-                            
-                            <span class="card-title">ret2shellcode</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-首先,checksec一下
-
-
-
-运行一下
-
-拖入ida查看
-危险函数strncpy()
-strncpy()用来复制字符串的前n个字符,其原型为:
-char * strncpy(char *dest,const char *src,siz
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-10
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/pwn/" class="post-category">
-                                    pwn
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                            <span class="chip bg-color">栈溢出</span>
-                        </a>
-                        
-                        <a href="/tags/shellcode/">
-                            <span class="chip bg-color">shellcode</span>
                         </a>
                         
                     </div>

